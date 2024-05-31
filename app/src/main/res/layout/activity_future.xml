@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background4"
     tools:context=".Activitis.FutureActivity">
 
     <ScrollView
@@ -43,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/background2"
+
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -107,6 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="16dp"
+                    android:background="@drawable/background2"
                     android:orientation="horizontal">
 
                     <LinearLayout
