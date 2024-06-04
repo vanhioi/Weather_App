@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/start">
 
+
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
@@ -13,7 +14,7 @@
         android:layout_marginStart="160dp"
         android:layout_marginTop="476dp"
         android:background="@drawable/background2"
-        android:text="Sign in"
+        android:text="Sign up"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"></Button>
 </androidx.constraintlayout.widget.ConstraintLayout>
