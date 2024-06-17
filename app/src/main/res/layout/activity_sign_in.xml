@@ -4,70 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/background4">
 
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="124dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="64dp"
         android:src="@drawable/cloudy_sunny"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/edtUserName"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="292dp"
+        android:text="Login"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/edtEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+    <EditText
+        android:id="@+id/edtEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="324dp"
         android:ems="10"
-        android:hint="User name"
+        android:hint="Email"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
-        android:id="@+id/edtPassWord"
+        android:id="@+id/edtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="108dp"
         android:layout_marginTop="4dp"
         android:ems="10"
-        android:hint="pass word"
+        android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtUserName" />
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/txtCreateanaccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="480dp"
-        android:text="New to Weather? Create an account"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="440dp"
+        android:text=" Create an account"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnSignin"
+    <TextView
+        android:id="@+id/txtSignin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="412dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="440dp"
         android:background="@drawable/background2"
-        android:text="Sign In"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnSignup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="516dp"
-        android:background="@drawable/background2"
-        android:text="Sign Up"
+        android:text="Signin"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
