@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                             Date date = new Date(1*1000L);
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE dd-MM-yyyy HH:mm:ss", Locale.getDefault());
                             String Day = simpleDateFormat.format(date);
+                            //hourTxt.setText(Day);
 
                             txtday.setText(Day);
                             JSONArray jsonArrayWeather = jsonObject.getJSONArray("weather");
