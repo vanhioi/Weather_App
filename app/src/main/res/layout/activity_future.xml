@@ -27,7 +27,7 @@
                 android:layout_margin="16dp">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/imgBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +68,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView9"
+                            android:id="@+id/txtCityName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Location"
@@ -76,7 +76,7 @@
                             android:textSize="30sp" />
 
                         <TextView
-                            android:id="@+id/textView"
+                            android:id="@+id/txtDay"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Tomorow"
@@ -84,12 +84,12 @@
                             android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/textView11"
+                            android:id="@+id/txtTemp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
-                            android:text="25°"
+                            android:text="16"
                             android:textColor="@color/white"
                             android:textSize="43sp" />
 
@@ -125,7 +125,7 @@
                             app:srcCompat="@drawable/rain" />
 
                         <TextView
-                            android:id="@+id/textView1"
+                            android:id="@+id/txtRain"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="22%"
@@ -158,7 +158,7 @@
                             app:srcCompat="@drawable/wind" />
 
                         <TextView
-                            android:id="@+id/textView4"
+                            android:id="@+id/txtWind"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="12 km/h"
@@ -191,7 +191,7 @@
                             app:srcCompat="@drawable/humidity" />
 
                         <TextView
-                            android:id="@+id/textView5"
+                            android:id="@+id/txtHumidity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="8%"
@@ -215,7 +215,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/view2"
+                android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"

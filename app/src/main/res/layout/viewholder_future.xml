@@ -7,10 +7,11 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="2dp"
     android:layout_marginEnd="8dp"
-    android:layout_marginBottom="2dp">
+    android:layout_marginBottom="2dp"
+    android:background="@drawable/background2">
 
     <TextView
-        android:id="@+id/dayTxt"
+        android:id="@+id/txtDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -24,12 +25,13 @@
         android:id="@+id/pic"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="88dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/sunny" />
 
     <TextView
@@ -44,7 +46,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/lowTxt"
+        android:id="@+id/templowTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -55,14 +57,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/highTxt"
+        android:id="@+id/temphighTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:text="20"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/lowTxt"
+        app:layout_constraintEnd_toStartOf="@+id/templowTxt"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

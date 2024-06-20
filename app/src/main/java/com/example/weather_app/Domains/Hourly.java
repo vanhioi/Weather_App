@@ -29,7 +29,7 @@ public class Hourly {
         this.picPath = picPath;
     }
 
-    public Hourly(String hour, int temp, String picPath) {
+    public Hourly(String hour, int temp) {
         this.hour = hour;
         this.temp = temp;
         this.picPath = picPath;

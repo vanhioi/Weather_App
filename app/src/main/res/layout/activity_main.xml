@@ -37,16 +37,26 @@
                     android:layout_gravity="center"
                     android:background="@drawable/map36" />
 
-                <TextView
-                    android:id="@+id/textView"
+                <EditText
+                    android:id="@+id/edtSearch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:text="Mostly Cloudy"
-                    android:textAlignment="center"
-                    android:layout_margin="10dp"
+                    android:layout_weight="2"
+                    android:ems="10"
+                    android:inputType="text"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:hint="nhập thành phố"/>
+
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:textSize="10sp"
+                    android:backgroundTint="@color/material_dynamic_primary60"
+                    android:text="OK"
+                    app:srcCompat="@android:drawable/ic_menu_search" />
 
                 <ImageButton
                     android:id="@+id/btnUser"
@@ -56,27 +66,47 @@
                     android:scaleType="fitEnd"
                     android:layout_gravity="center"
                     android:background="@drawable/user36" />
+
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txtLocation"
+                android:id="@+id/txtStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:text="Mostly Cloudy"
+                android:layout_margin="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txtcountry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Location"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+            <TextView
+                android:id="@+id/txtcity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="Location"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imgIcon"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/cloudy_sunny" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/txtday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -86,7 +116,7 @@
                 android:textSize="19sp" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txtTemp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="25°"
@@ -95,14 +125,33 @@
                 android:textSize="63dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="H:27 L:18"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/txtTempH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="H:27"
+                    android:textAlignment="center"
+                    android:layout_marginHorizontal="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/txtTempL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="L:18"
+                    android:textAlignment="center"
+                    android:layout_marginHorizontal="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -126,7 +175,7 @@
                         app:srcCompat="@drawable/rain" />
 
                     <TextView
-                        android:id="@+id/textView6"
+                        android:id="@+id/txtRain"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="22%"
@@ -159,7 +208,7 @@
                         app:srcCompat="@drawable/wind" />
 
                     <TextView
-                        android:id="@+id/textView9"
+                        android:id="@+id/txtWind"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="12 km/h"
@@ -192,7 +241,7 @@
                         app:srcCompat="@drawable/humidity" />
 
                     <TextView
-                        android:id="@+id/textView11"
+                        android:id="@+id/txtHumidity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="8%"
