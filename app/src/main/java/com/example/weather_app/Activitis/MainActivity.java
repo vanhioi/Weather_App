@@ -46,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
     HourlyAdapters hourlyAdapters;
     private RecyclerView.Adapter adapterHourly;
     private RecyclerView recyclerView;
-    ImageButton btnMap, btnUser;
-    Button btnSearch;
+    ImageButton btnMap, btnUser, btnSearch;
     EditText edtSearch;
     TextView txtcity, txtcountry, txtNext, txtStatus, txtday, txtTemp, txtTempH, txtTempL, txtRain, txtWind, txtHumidity, tempTxt, hourTxt;
     ImageView imgIcon;
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     public void GetCurrentWeatherData(String data) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
         String url = "https://api.openweathermap.org/data/2.5/weather?q="+data+"&units=metric&appid=48d34576ad87840b7f38187a804d0101";
-        Log.d("URL", url);
+        //Log.d("URL", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -153,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
                             Date date = new Date(1*1000L);
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE dd-MM-yyyy HH:mm:ss", Locale.getDefault());
                             String Day = simpleDateFormat.format(date);
-                            //hourTxt.setText(Day);
 
                             txtday.setText(Day);
                             JSONArray jsonArrayWeather = jsonObject.getJSONArray("weather");
@@ -206,9 +204,9 @@ public class MainActivity extends AppCompatActivity {
                 });
         requestQueue.add(stringRequest);
     }
-    /*private void Get7DaysData(String Data) {
+    private void Get7DaysData(String Data) {
 
-        *//*ArrayList<Hourly> items = new ArrayList<>();
+        /*ArrayList<Hourly> items = new ArrayList<>();
 
         items.add(new Hourly("9pm", 28,"cloudy"));
         items.add(new Hourly("11pm", 29,"sunny"));
@@ -220,9 +218,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         adapterHourly=new HourlyAdapters(items);
-        recyclerView.setAdapter(adapterHourly);*//*
+        recyclerView.setAdapter(adapterHourly);*/
         String url = "https://api.openweathermap.org/data/2.5/forecast?q="+Data+"&units=metric&cnt=7&appid=48d34576ad87840b7f38187a804d0101";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+        //Log.d("URL", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -245,7 +244,6 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject jsonObjectTemp = jsonObjectList.getJSONObject("main");
                                 String temp = jsonObjectTemp.getString("temp");
                                 int temperature = Double.valueOf(temp).intValue();
-
                                 items.add(new Hourly(formattedDate, temperature));
                             }
                             adapterHourly = new HourlyAdapters(items);
@@ -273,5 +271,5 @@ public class MainActivity extends AppCompatActivity {
 
 
         requestQueue.add(stringRequest);
-    }*/
+    }
 }
