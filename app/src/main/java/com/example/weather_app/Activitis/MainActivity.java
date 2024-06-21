@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.view1);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        //Get7DaysData("");
+        Get7DaysData("");
         /*// Nhận Intent và lấy dữ liệu city
         Intent intent = getIntent();
         String data = intent.getStringExtra("city");
@@ -246,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
                                 int temperature = Double.valueOf(temp).intValue();
                                 items.add(new Hourly(formattedDate, temperature));
                             }
+
                             adapterHourly = new HourlyAdapters(items);
                             recyclerView.setAdapter(adapterHourly);
                             adapterHourly.notifyDataSetChanged();
