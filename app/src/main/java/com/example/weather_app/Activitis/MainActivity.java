@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String url = "https://api.openweathermap.org/data/2.5/forecast?q="+data+"&units=metric&cnt=7&appid=48d34576ad87840b7f38187a804d0101";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        //Log.d("URL", url);
+        //Log.d("URL", url); lấy dữ liệu APIs về logcat
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
