@@ -8,9 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.weather_app.Activitis.Weather;
 import com.example.weather_app.Domains.Hourly;
 import com.example.weather_app.R;
 import com.squareup.picasso.Picasso;
@@ -21,7 +19,7 @@ public class HourlyAdapters extends RecyclerView.Adapter<HourlyAdapters.viewHold
     private ArrayList<Hourly> items;
     private Context context;
 
-    public HourlyAdapters(ArrayList<Hourly> items, Context context) {
+    public HourlyAdapters(ArrayList<Hourly> items) {
         this.items = items;
         this.context = context;
     }

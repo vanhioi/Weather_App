@@ -299,7 +299,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="Next 7 Day"
+                    android:text="Today - Next 7 Day"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />

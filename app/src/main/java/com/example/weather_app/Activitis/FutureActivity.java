@@ -36,7 +36,7 @@ public class FutureActivity extends AppCompatActivity {
     String tenthanhpho = "";
     ImageView imgBack;
     RecyclerView recyclerView;
-    TextView txtCityName, txtTemp, txtDay, txtRain, txtWind, txtHumidity;
+    TextView txtCityName, txtTemp, txtDay, txtRain, txtWind, txtHumidity, txtday;
     CustomAdapter customAdapter;
     ArrayList<Weather> weatherArray;
 
@@ -54,6 +54,7 @@ public class FutureActivity extends AppCompatActivity {
         txtRain = findViewById(R.id.txtRain);
         txtWind = findViewById(R.id.txtWind);
         txtHumidity = findViewById(R.id.txtHumidity);
+        txtday = findViewById(R.id.txtday);
         weatherArray = new ArrayList<>();
         customAdapter = new CustomAdapter(this, weatherArray);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -75,7 +76,9 @@ public class FutureActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
     }
+
 
     private void Get7DaysData(String data) {
         String url = "https://api.openweathermap.org/data/2.5/forecast?q=" + data + "&units=metric&cnt=56&appid=48d34576ad87840b7f38187a804d0101";
@@ -94,7 +97,6 @@ public class FutureActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArrayList.length(); i++) {
                                 JSONObject jsonObjectList = jsonArrayList.getJSONObject(i);
                                 String day = jsonObjectList.getString("dt");
-
 
                                 long l = Long.valueOf(day);
                                 Date date = new Date(l * 1000L);

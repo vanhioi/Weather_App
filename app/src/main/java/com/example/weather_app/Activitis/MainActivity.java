@@ -42,10 +42,10 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    //ArrayList<Hourly>hourlyArrayList;
-    //HourlyAdapters hourlyAdapters;
-    //private RecyclerView.Adapter adapterHourly;
-    //private RecyclerView recyclerView;
+    /*ArrayList<Hourly>hourlyArrayList;
+    HourlyAdapters hourlyAdapters;*/
+    private RecyclerView.Adapter adapterHourly;
+    private RecyclerView recyclerView;
     ImageButton btnMap, btnUser, btnSearch;
     EditText edtSearch;
     TextView txtcity, txtcountry, txtNext, txtStatus, txtday, txtTemp, txtTempH, txtTempL, txtRain, txtWind, txtHumidity, tempTxt, hourTxt;
@@ -79,17 +79,22 @@ public class MainActivity extends AppCompatActivity {
         GetCurrentWeatherData("Saigon");
 
         /*hourlyArrayList = new ArrayList<>();
-        hourlyAdapters = new HourlyAdapters(hourlyArrayList, this);
+        hourlyAdapters = new HourlyAdapters(hourlyArrayList, this);*/
         recyclerView = findViewById(R.id.view1);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        ArrayList<Hourly> items = new ArrayList<>();
+        adapterHourly=new HourlyAdapters(items);
+        recyclerView.setAdapter(adapterHourly);
 
         Get7DaysData("");
+        String city = edtSearch.getText().toString().trim();
+        Get7DaysData(city);
         if (city == null || city.equals("")) {
             tenthanhpho = "Saigon";
         } else {
             tenthanhpho = city;
         }
-        Get7DaysData(tenthanhpho);*/
+        Get7DaysData(tenthanhpho);
 
         /*// Nhận Intent và lấy dữ liệu city
         Intent intent = getIntent();
@@ -213,21 +218,26 @@ public class MainActivity extends AppCompatActivity {
                 });
         requestQueue.add(stringRequest);
     }
-    /*private void Get7DaysData(String data) {
 
-        *//*ArrayList<Hourly> items = new ArrayList<>();
+    //Lỗi hiển thị dữ liệu chỗ Today
+    private void Get7DaysData(String data) {
 
-        items.add(new Hourly("9pm", 28,"cloudy"));
+        /*ArrayList<Hourly> items = new ArrayList<>();*/
+
+        /*items.add(new Hourly("9pm", 28,"cloudy"));
         items.add(new Hourly("11pm", 29,"sunny"));
         items.add(new Hourly("12pm", 30,"wind"));
         items.add(new Hourly("1pm", 28,"rainy"));
-        items.add(new Hourly("2pm", 27,"storn"));
+        items.add(new Hourly("2pm", 27,"storn"));*/
 
-        recyclerView=findViewById(R.id.view1);
+        /*recyclerView=findViewById(R.id.view1);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-        adapterHourly=new HourlyAdapters(items);
-        recyclerView.setAdapter(adapterHourly);*//*
+*/
+        /*adapterHourly=new HourlyAdapters(items);
+        recyclerView.setAdapter(adapterHourly);*/
+        if (data == null || data.isEmpty()) {
+            data = "Saigon";
+        }
         String url = "https://api.openweathermap.org/data/2.5/forecast?q="+data+"&units=metric&cnt=7&appid=48d34576ad87840b7f38187a804d0101";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
         //Log.d("URL", url);
@@ -235,8 +245,8 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-Log.d("ketqua7day","JSON"+response);
-                        *//*try {
+                    Log.d("ketqua7day","JSON"+response); //Logcat hiển thị APIs nhưng màn hình k hiển thị
+                        try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArrayList = jsonObject.getJSONArray("list");
                             ArrayList<Hourly> items = new ArrayList<>();
@@ -248,26 +258,32 @@ Log.d("ketqua7day","JSON"+response);
                                 Date date = new Date(l * 1000L);
                                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
                                 String formattedDate = simpleDateFormat.format(date);
-                                hourTxt.setText(formattedDate);
+                                if (hourTxt != null) {
+                                    hourTxt.setText(formattedDate);
+                                }
 
                                 JSONObject jsonObjectTemp = jsonObjectList.getJSONObject("main");
                                 String temp = jsonObjectTemp.getString("temp");
-                                int temperature = Double.valueOf(temp).intValue();
-                                items.add(new Hourly(formattedDate, temperature));
-                            }
+                                int temperature = (int) Math.round(Double.parseDouble(temp));
 
-                            adapterHourly = new HourlyAdapters(items);
+                                JSONArray jsonArrayWeather = jsonObjectList.getJSONArray("weather");
+                                JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject(0);
+                                String icon = jsonObjectWeather.getString("icon");
+
+                                items.add(new Hourly(formattedDate, temperature, icon));
+                            }
+                            //adapterHourly = new HourlyAdapters(items);
                             recyclerView.setAdapter(adapterHourly);
                             adapterHourly.notifyDataSetChanged();
                         } catch (JSONException e) {
                             Log.e("ketqua", "Lỗi phân tích JSON: " + e.getMessage());
-                        }*//*
+                        }
                     }
                     },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        *//*String message = "Lỗi không xác định";
+                        String message = "Lỗi không xác định";
                         if (error != null && error.getMessage() != null) {
                             message = error.getMessage();
                         } else if (error != null && error.networkResponse != null) {
@@ -275,11 +291,11 @@ Log.d("ketqua7day","JSON"+response);
                             // Bạn có thể thêm các thông tin khác từ networkResponse như header nếu cần
                         }
                         Log.e("ketqua", "Lỗi: " + message);
-                        Toast.makeText(MainActivity.this, "Lỗi: " + message, Toast.LENGTH_SHORT).show();*//*
+                        Toast.makeText(MainActivity.this, "Lỗi: " + message, Toast.LENGTH_SHORT).show();
                     }
                 });
 
 
         requestQueue.add(stringRequest);
-    }*/
+    }
 }

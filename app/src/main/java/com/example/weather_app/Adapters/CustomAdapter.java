@@ -1,6 +1,7 @@
 package com.example.weather_app.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.weather_app.Activitis.FutureActivity;
 import com.example.weather_app.Activitis.Weather;
 import com.example.weather_app.R;
 import com.squareup.picasso.Picasso;
@@ -40,6 +42,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.templowTxt.setText(weather.MinTemp + "°C");
         holder.temphighTxt.setText(weather.MaxTemp + "°C");
         Picasso.get().load("https://openweathermap.org/img/wn/" + weather.Image + ".png").into(holder.pic);
+
+        //Nhấp vào từng RecyclerView nhưng đang bị lỗi không hiển thị dữ liệu
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FutureActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
