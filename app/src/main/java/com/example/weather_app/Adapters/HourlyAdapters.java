@@ -18,11 +18,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class HourlyAdapters extends RecyclerView.Adapter<HourlyAdapters.viewHolder> {
-    ArrayList<Hourly> items;
-    Context context;
-    public HourlyAdapters(ArrayList<Hourly> items) {
+    private ArrayList<Hourly> items;
+    private Context context;
+
+    public HourlyAdapters(ArrayList<Hourly> items, Context context) {
         this.items = items;
+        this.context = context;
     }
+
     @NonNull
     @Override
     public HourlyAdapters.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,6 +52,7 @@ public class HourlyAdapters extends RecyclerView.Adapter<HourlyAdapters.viewHold
     }
 
     public class viewHolder extends RecyclerView.ViewHolder{
+
         TextView hourTxt, tempTxt;
         ImageView pic;
         public viewHolder(@NonNull View itemView) {

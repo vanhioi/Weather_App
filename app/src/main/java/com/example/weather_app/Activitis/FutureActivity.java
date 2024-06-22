@@ -78,7 +78,7 @@ public class FutureActivity extends AppCompatActivity {
     }
 
     private void Get7DaysData(String data) {
-        String url = "https://api.openweathermap.org/data/2.5/forecast?q=" + data + "&units=metric&cnt=7&appid=48d34576ad87840b7f38187a804d0101";
+        String url = "https://api.openweathermap.org/data/2.5/forecast?q=" + data + "&units=metric&cnt=56&appid=48d34576ad87840b7f38187a804d0101";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
