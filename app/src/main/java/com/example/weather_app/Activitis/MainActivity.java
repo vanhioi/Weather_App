@@ -3,23 +3,17 @@ package com.example.weather_app.Activitis;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,8 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.weather_app.Adapters.HourlyAdapters;
-import com.example.weather_app.Domains.Hourly;
 import com.example.weather_app.R;
 import com.squareup.picasso.Picasso;
 
@@ -39,16 +31,20 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     /*ArrayList<Hourly>hourlyArrayList;
     HourlyAdapters hourlyAdapters;*/
-    private RecyclerView.Adapter adapterHourly;
-    private RecyclerView recyclerView;
+    //private RecyclerView.Adapter adapterHourly;
+    /*private RecyclerView recyclerView;
+    private List<String> randomQuotes;*/
+    private List<String> quotes = new ArrayList<>();
     ImageButton btnMap, btnUser, btnSearch;
     EditText edtSearch;
-    TextView txtcity, txtcountry, txtNext, txtStatus, txtday, txtTemp, txtTempH, txtTempL, txtRain, txtWind, txtHumidity, tempTxt, hourTxt;
+    TextView txtcity, txtcountry, txtNext, txtStatus, txtday, txtTemp, txtTempH, txtTempL, txtRain, txtWind, txtHumidity, tempTxt, hourTxt, txtQuotes;
     ImageView imgIcon;
     String city = "";
     String tenthanhpho = "";
@@ -75,18 +71,48 @@ public class MainActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
         tempTxt=findViewById(R.id.tempTxt);
         hourTxt = findViewById(R.id.hourTxt);
+        txtQuotes = findViewById(R.id.txtQuotes);
 
         GetCurrentWeatherData("Saigon");
 
+        // Thêm các câu nói vào danh sách
+        addQuotes();
+
+        // Lấy câu nói ngẫu nhiên
+        String randomQuote = getRandomQuote();
+
+        // Hiển thị câu nói ngẫu nhiên
+        displayQuote(randomQuote);
+
         /*hourlyArrayList = new ArrayList<>();
         hourlyAdapters = new HourlyAdapters(hourlyArrayList, this);*/
-        recyclerView = findViewById(R.id.view1);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        ArrayList<Hourly> items = new ArrayList<>();
-        adapterHourly=new HourlyAdapters(items);
-        recyclerView.setAdapter(adapterHourly);
+        //recyclerView = findViewById(R.id.view1);
+        /*recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        ArrayList<Hourly> items = new ArrayList<>();*/
+        //adapterHourly=new HourlyAdapters(items);
+        //recyclerView.setAdapter(adapterHourly);
 
-        Get7DaysData("");
+        /*recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        randomQuotes = Arrays.asList(
+                "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+                "The only limit to our realization of tomorrow will be our doubts of today.",
+                "The way to get started is to quit talking and begin doing.",
+                "Don't watch the clock; do what it does. Keep going.",
+                "It's not whether you get knocked down, it's whether you get up.",
+                "We may encounter many defeats but we must not be defeated.",
+                "The only way to do great work is to love what you do.",
+                "If you can dream it, you can achieve it.",
+                "In order to succeed, we must first believe that we can.",
+                "Start where you are. Use what you have. Do what you can."
+        );
+
+        // Setup RecyclerView
+        QuoteAdapter adapter = new QuoteAdapter(randomQuotes);
+        recyclerView.setAdapter(adapter);*/
+
+        /*Get7DaysData("");
         String city = edtSearch.getText().toString().trim();
         Get7DaysData(city);
         if (city == null || city.equals("")) {
@@ -94,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             tenthanhpho = city;
         }
-        Get7DaysData(tenthanhpho);
+        Get7DaysData(tenthanhpho);*/
 
         /*// Nhận Intent và lấy dữ liệu city
         Intent intent = getIntent();
@@ -148,6 +174,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void addQuotes() {
+        quotes.add("Hãy sống như ngày mai bạn sẽ chết.");
+        quotes.add("Đừng bao giờ từ bỏ ước mơ.");
+        quotes.add("Thành công không phải là đích đến.");
+        quotes.add("Cuộc sống là một cuộc hành trình.");
+        quotes.add("Yêu thương là điều quý giá nhất.");
+        // Thêm các câu nói khác nếu cần
+    }
+
+    private String getRandomQuote() {
+        Random random = new Random();
+        int index = random.nextInt(quotes.size());
+        return quotes.get(index);
+    }
+
+    private void displayQuote(String quote) {
+        TextView textView = findViewById(R.id.txtQuotes);
+        textView.setText(quote);
+    }
+
     public void GetCurrentWeatherData(String data) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
         String url = "https://api.openweathermap.org/data/2.5/weather?q="+data+"&units=metric&appid=48d34576ad87840b7f38187a804d0101";
@@ -173,8 +219,49 @@ public class MainActivity extends AppCompatActivity {
                             String status = jsonObjectWeather.getString("main");
                             String icon = jsonObjectWeather.getString("icon");
 
-                            Picasso.get().load("https://openweathermap.org/img/wn/" + icon + ".png").into(imgIcon);
-                            txtStatus.setText(status);
+                            // Tìm ImageView trong bố cục giao diện
+                            ImageView imgIcon = findViewById(R.id.imgIcon);
+                            ViewGroup.LayoutParams layoutParams = imgIcon.getLayoutParams();
+                            layoutParams.width = 500; // Chiều rộng theo đơn vị pixel
+                            layoutParams.height = 500; // Chiều cao theo đơn vị pixel
+                            imgIcon.setLayoutParams(layoutParams);
+                            // Sử dụng hình ảnh của riêng bạn từ thư mục drawable
+                            switch (icon) {
+                                case "01d":
+                                    Picasso.get().load(R.drawable.clearsky).into(imgIcon);
+                                    setBackground(R.drawable.nang);
+                                    break;
+                                case "02d":
+                                    Picasso.get().load(R.drawable.fewclouds).into(imgIcon);
+                                    setBackground(R.drawable.nang);
+                                    break;
+                                case "03d":
+                                    Picasso.get().load(R.drawable.scatteredclouds).into(imgIcon);
+                                    setBackground(R.drawable.nhieumay);
+                                    break;
+                                case "04d":
+                                    Picasso.get().load(R.drawable.scatteredclouds).into(imgIcon);
+                                    setBackground(R.drawable.nhieumay);
+                                    break;
+                                case "09d":
+                                    Picasso.get().load(R.drawable.rain_mua).into(imgIcon);
+                                    setBackground(R.drawable.mua);
+                                    break;
+                                case "10d":
+                                    Picasso.get().load(R.drawable.rain_mua).into(imgIcon);
+                                    setBackground(R.drawable.mua);
+                                    break;
+                                case "11d":
+                                    Picasso.get().load(R.drawable.thunderstorm).into(imgIcon);
+                                    setBackground(R.drawable.mua);
+                                    break;
+                                case "13d":
+                                    Picasso.get().load(R.drawable.snowy).into(imgIcon);
+                                    break;
+                                case "50d":
+                                    Picasso.get().load(R.drawable.storm).into(imgIcon);
+                                    break;
+                            }
 
                             JSONObject jsonObjectMain = jsonObject.getJSONObject("main");
                             String nhietdo = jsonObjectMain.getString("temp");
@@ -219,6 +306,11 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    private void setBackground(int drawableId) {
+        ConstraintLayout layout = findViewById(R.id.main); // mainLayout là id của layout chính
+        layout.setBackgroundResource(drawableId);
+    }
+
     //Lỗi hiển thị dữ liệu chỗ Today
     private void Get7DaysData(String data) {
 
@@ -235,7 +327,8 @@ public class MainActivity extends AppCompatActivity {
 */
         /*adapterHourly=new HourlyAdapters(items);
         recyclerView.setAdapter(adapterHourly);*/
-        if (data == null || data.isEmpty()) {
+
+        /*if (data == null || data.isEmpty()) {
             data = "Saigon";
         }
         String url = "https://api.openweathermap.org/data/2.5/forecast?q="+data+"&units=metric&cnt=7&appid=48d34576ad87840b7f38187a804d0101";
@@ -296,6 +389,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-        requestQueue.add(stringRequest);
+        requestQueue.add(stringRequest);*/
     }
 }

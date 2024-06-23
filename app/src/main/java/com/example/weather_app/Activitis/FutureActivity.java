@@ -34,7 +34,7 @@ import java.util.Date;
 public class FutureActivity extends AppCompatActivity {
 
     String tenthanhpho = "";
-    ImageView imgBack;
+    ImageView imgBack, pic;
     RecyclerView recyclerView;
     TextView txtCityName, txtTemp, txtDay, txtRain, txtWind, txtHumidity, txtday;
     CustomAdapter customAdapter;
@@ -46,6 +46,7 @@ public class FutureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_future);
 
+        pic =findViewById(R.id.pic);
         imgBack = findViewById(R.id.imgBack);
         recyclerView = findViewById(R.id.list);
         txtCityName = findViewById(R.id.txtCityName);
