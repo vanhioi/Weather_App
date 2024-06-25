@@ -15,11 +15,31 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/dayofweekTxt"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:layout_margin="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/dayTxt"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:layout_margin="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
             android:id="@+id/hourTxt"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textAlignment="center"
-            android:layout_margin="8dp"
+            android:layout_margin="1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
@@ -36,9 +56,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:textStyle="bold"
             android:textColor="@color/white"
             android:textAlignment="center"
-            android:layout_margin="8dp"
+            android:layout_margin="1dp"
             android:text="20" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

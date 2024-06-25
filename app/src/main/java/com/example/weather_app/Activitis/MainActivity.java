@@ -2,7 +2,9 @@ package com.example.weather_app.Activitis;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +25,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.weather_app.Adapters.HourlyAdapters;
+import com.example.weather_app.Domains.Hourly;
 import com.example.weather_app.R;
 import com.squareup.picasso.Picasso;
 
@@ -28,26 +34,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    /*ArrayList<Hourly>hourlyArrayList;
-    HourlyAdapters hourlyAdapters;*/
-    //private RecyclerView.Adapter adapterHourly;
-    /*private RecyclerView recyclerView;
-    private List<String> randomQuotes;*/
+    private RecyclerView recyclerView;
+    private MediaPlayer mediaPlayer;
     private List<String> quotes = new ArrayList<>();
-    ImageButton btnMap, btnUser, btnSearch;
+    ImageButton btnMap, btnUser;
     EditText edtSearch;
-    TextView txtcity, txtcountry, txtNext, txtStatus, txtday, txtTemp, txtTempH, txtTempL, txtRain, txtWind, txtHumidity, tempTxt, hourTxt, txtQuotes;
-    ImageView imgIcon;
+    TextView txtcity, txtcountry, txtNext, txtStatus, txtday, txtTemp, txtTempH, txtTempL, txtRain, txtWind, txtHumidity, tempTxt, hourTxt, dayofweekTxt, dayTxt, txtQuotes;
+    ImageView imgIcon, btnSearch;
     String city = "";
-    String tenthanhpho = "";
+    HourlyAdapters hourlyAdapters;
+    ArrayList<Hourly> hourlyArrayList;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,74 +77,23 @@ public class MainActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
         tempTxt=findViewById(R.id.tempTxt);
         hourTxt = findViewById(R.id.hourTxt);
+        dayTxt =findViewById(R.id.dayTxt);
+        dayofweekTxt =findViewById(R.id.dayofweekTxt);
         txtQuotes = findViewById(R.id.txtQuotes);
+        recyclerView = findViewById(R.id.view1);
+
+        hourlyArrayList = new ArrayList<>();
+        hourlyAdapters = new HourlyAdapters(hourlyArrayList, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(hourlyAdapters);
 
         GetCurrentWeatherData("Saigon");
+        GetHourlyData("Saigon");
 
-        // Thêm các câu nói vào danh sách
+        //Q
         addQuotes();
-
-        // Lấy câu nói ngẫu nhiên
         String randomQuote = getRandomQuote();
-
-        // Hiển thị câu nói ngẫu nhiên
         displayQuote(randomQuote);
-
-        /*hourlyArrayList = new ArrayList<>();
-        hourlyAdapters = new HourlyAdapters(hourlyArrayList, this);*/
-        //recyclerView = findViewById(R.id.view1);
-        /*recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        ArrayList<Hourly> items = new ArrayList<>();*/
-        //adapterHourly=new HourlyAdapters(items);
-        //recyclerView.setAdapter(adapterHourly);
-
-        /*recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        randomQuotes = Arrays.asList(
-                "Success is not final, failure is not fatal: It is the courage to continue that counts.",
-                "The only limit to our realization of tomorrow will be our doubts of today.",
-                "The way to get started is to quit talking and begin doing.",
-                "Don't watch the clock; do what it does. Keep going.",
-                "It's not whether you get knocked down, it's whether you get up.",
-                "We may encounter many defeats but we must not be defeated.",
-                "The only way to do great work is to love what you do.",
-                "If you can dream it, you can achieve it.",
-                "In order to succeed, we must first believe that we can.",
-                "Start where you are. Use what you have. Do what you can."
-        );
-
-        // Setup RecyclerView
-        QuoteAdapter adapter = new QuoteAdapter(randomQuotes);
-        recyclerView.setAdapter(adapter);*/
-
-        /*Get7DaysData("");
-        String city = edtSearch.getText().toString().trim();
-        Get7DaysData(city);
-        if (city == null || city.equals("")) {
-            tenthanhpho = "Saigon";
-        } else {
-            tenthanhpho = city;
-        }
-        Get7DaysData(tenthanhpho);*/
-
-        /*// Nhận Intent và lấy dữ liệu city
-        Intent intent = getIntent();
-        String data = intent.getStringExtra("city");
-
-        if (data != null && !data.isEmpty()) {
-            // Gọi hàm để lấy dữ liệu thời tiết hiện tại
-            GetCurrentWeatherData(data);
-        }*/
-        /*btnUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent search = new Intent(MainActivity.this, sign_in.class);
-                startActivities(new Intent[]{search});
-                *//*String city = edtSearch.getText().toString();
-                GetCurrentWeatherData(city);*//*
-            }
-        });*/
 
         btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,40 +102,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         btnSearch.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 String city = edtSearch.getText().toString();
-                String City;
-                if (city.equals("")) {
-                    City = "Saigon";
-
-                    GetCurrentWeatherData(City);
-                } else {
-                    City = city;
-                    GetCurrentWeatherData(City);
-
-                }
+                String City = city.equals("") ? "Saigon" : city;
+                GetCurrentWeatherData(City);
+                GetHourlyData(City);
             }
         });
+
         txtNext.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, FutureActivity.class);
                 String city = edtSearch.getText().toString();
-                intent.putExtra("name",city);
-                startActivities(new Intent[]{intent});
+                intent.putExtra("name", city);
+                startActivity(intent);
             }
         });
     }
 
     private void addQuotes() {
         quotes.add("Hãy sống như ngày mai bạn sẽ chết.");
-        quotes.add("Đừng bao giờ từ bỏ ước mơ.");
-        quotes.add("Thành công không phải là đích đến.");
-        quotes.add("Cuộc sống là một cuộc hành trình.");
+        quotes.add("“Phấn đấu không phải để thành công, mà là để trở nên có giá trị.”");
+        quotes.add("“Vinh quang lớn nhất trong cuộc sống không phải là không bao giờ gục ngã, mà là vươn lên sau mỗi lần vấp ngã.”");
+        quotes.add("“Hạnh phúc không phải là thứ có sẵn. Nó đến từ hành động của chính bạn.”");
         quotes.add("Yêu thương là điều quý giá nhất.");
-        // Thêm các câu nói khác nếu cần
+        quotes.add("“Cách duy nhất để làm những công việc tuyệt vời là yêu những gì bạn làm.”");
+        // Thêm các câu nói khác
     }
 
     private String getRandomQuote() {
@@ -196,8 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void GetCurrentWeatherData(String data) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        String url = "https://api.openweathermap.org/data/2.5/weather?q="+data+"&units=metric&appid=48d34576ad87840b7f38187a804d0101";
-        //Log.d("URL", url);
+        String url = "https://api.openweathermap.org/data/2.5/weather?q=" + data + "&units=metric&appid=48d34576ad87840b7f38187a804d0101";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -208,9 +158,9 @@ public class MainActivity extends AppCompatActivity {
                             String cityname = jsonObject.getString("name");
                             txtcity.setText(cityname);
 
-                            long time = jsonObject.getLong("dt") * 1000; // Lấy thời gian và chuyển đổi sang milliseconds
+                            long time = jsonObject.getLong("dt") * 1000;
                             Date date = new Date(time);
-                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE | dd-MM-yyyy | HH:mm:ss", Locale.getDefault());
+                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE | dd-MM-yyyy | HH:mm", Locale.getDefault());
                             String formattedDate = sdf.format(date);
                             txtday.setText(formattedDate);
 
@@ -218,14 +168,13 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject(0);
                             String status = jsonObjectWeather.getString("main");
                             String icon = jsonObjectWeather.getString("icon");
+                            //Picasso.get().load("https://openweathermap.org/img/wn/" + icon + ".png").into(imgIcon);
 
-                            // Tìm ImageView trong bố cục giao diện
                             ImageView imgIcon = findViewById(R.id.imgIcon);
                             ViewGroup.LayoutParams layoutParams = imgIcon.getLayoutParams();
-                            layoutParams.width = 500; // Chiều rộng theo đơn vị pixel
-                            layoutParams.height = 500; // Chiều cao theo đơn vị pixel
+                            layoutParams.width = 500;
+                            layoutParams.height = 500;
                             imgIcon.setLayoutParams(layoutParams);
-                            // Sử dụng hình ảnh của riêng bạn từ thư mục drawable
                             switch (icon) {
                                 case "01d":
                                     Picasso.get().load(R.drawable.clearsky).into(imgIcon);
@@ -263,6 +212,8 @@ public class MainActivity extends AppCompatActivity {
                                     break;
                             }
 
+                            playMusicForWeather(icon);
+
                             JSONObject jsonObjectMain = jsonObject.getJSONObject("main");
                             String nhietdo = jsonObjectMain.getString("temp");
                             String nhietdocaonhat = jsonObjectMain.getString("temp_max");
@@ -276,22 +227,25 @@ public class MainActivity extends AppCompatActivity {
                             Double c = Double.valueOf(nhietdothapnhat);
                             String Nhietdothapnhat = String.valueOf(c.intValue());
 
-                            txtTempH.setText("H:"+Nhietdocaonhat);
-                            txtTempL.setText("L:"+Nhietdothapnhat);
-                            txtTemp.setText(Nhietdo+"°C");
-                            txtHumidity.setText(doam+"%");
+                            txtTempH.setText("H:" + Nhietdocaonhat);
+                            txtTempL.setText("L:" + Nhietdothapnhat);
+                            txtTemp.setText(Nhietdo + "°C");
+                            txtHumidity.setText(doam + "%");
+                            txtStatus.setText(status);
 
                             JSONObject jsonObjectWind = jsonObject.getJSONObject("wind");
                             String gio = jsonObjectWind.getString("speed");
-                            txtWind.setText(gio+"m/s");
+                            txtWind.setText(gio + "m/s");
 
                             JSONObject jsonObjectRain = jsonObject.getJSONObject("clouds");
                             String mua = jsonObjectRain.getString("all");
-                            txtRain.setText(mua+"%");
+                            txtRain.setText(mua + "%");
 
                             JSONObject jsonObjectSys = jsonObject.getJSONObject("sys");
                             String country = jsonObjectSys.getString("country");
                             txtcountry.setText(country);
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -300,95 +254,113 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Lỗi: " + error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
         requestQueue.add(stringRequest);
     }
 
     private void setBackground(int drawableId) {
-        ConstraintLayout layout = findViewById(R.id.main); // mainLayout là id của layout chính
-        layout.setBackgroundResource(drawableId);
+        ConstraintLayout mainLayout = findViewById(R.id.main);
+        mainLayout.setBackgroundResource(drawableId);
     }
 
-    //Lỗi hiển thị dữ liệu chỗ Today
-    private void Get7DaysData(String data) {
-
-        /*ArrayList<Hourly> items = new ArrayList<>();*/
-
-        /*items.add(new Hourly("9pm", 28,"cloudy"));
-        items.add(new Hourly("11pm", 29,"sunny"));
-        items.add(new Hourly("12pm", 30,"wind"));
-        items.add(new Hourly("1pm", 28,"rainy"));
-        items.add(new Hourly("2pm", 27,"storn"));*/
-
-        /*recyclerView=findViewById(R.id.view1);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-*/
-        /*adapterHourly=new HourlyAdapters(items);
-        recyclerView.setAdapter(adapterHourly);*/
-
-        /*if (data == null || data.isEmpty()) {
-            data = "Saigon";
-        }
-        String url = "https://api.openweathermap.org/data/2.5/forecast?q="+data+"&units=metric&cnt=7&appid=48d34576ad87840b7f38187a804d0101";
+    public void GetHourlyData(String data) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        //Log.d("URL", url); lấy dữ liệu APIs về logcat
+        String url = "https://api.openweathermap.org/data/2.5/forecast?q=" + data + "&units=metric&appid=48d34576ad87840b7f38187a804d0101";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                    Log.d("ketqua7day","JSON"+response); //Logcat hiển thị APIs nhưng màn hình k hiển thị
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArrayList = jsonObject.getJSONArray("list");
-                            ArrayList<Hourly> items = new ArrayList<>();
+                            hourlyArrayList.clear(); // Clear the previous data
                             for (int i = 0; i < jsonArrayList.length(); i++) {
                                 JSONObject jsonObjectList = jsonArrayList.getJSONObject(i);
-                                String day = jsonObjectList.getString("dt");
 
-                                long l = Long.valueOf(day);
-                                Date date = new Date(l * 1000L);
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
-                                String formattedDate = simpleDateFormat.format(date);
-                                if (hourTxt != null) {
-                                    hourTxt.setText(formattedDate);
-                                }
+                                // Get the date and time for the forecast
+                                String dt_txt = jsonObjectList.getString("dt_txt");
 
-                                JSONObject jsonObjectTemp = jsonObjectList.getJSONObject("main");
-                                String temp = jsonObjectTemp.getString("temp");
-                                int temperature = (int) Math.round(Double.parseDouble(temp));
+                                // Parse the date-time string
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                                Date date = dateFormat.parse(dt_txt);
 
+                                // Extract day of the week and date
+                                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+                                SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
+                                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+                                String dayOfWeek = dayFormat.format(date);
+                                String dateOnly = dateOnlyFormat.format(date);
+                                String time = timeFormat.format(date);
+
+                                // Get main object for temperature
+                                JSONObject jsonObjectMain = jsonObjectList.getJSONObject("main");
+                                String nhietdo = jsonObjectMain.getString("temp");
+                                int temperature = (int) Math.round(Double.parseDouble(nhietdo));
+
+                                // Get weather array for icon and description
                                 JSONArray jsonArrayWeather = jsonObjectList.getJSONArray("weather");
                                 JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject(0);
                                 String icon = jsonObjectWeather.getString("icon");
 
-                                items.add(new Hourly(formattedDate, temperature, icon));
+                                // Create a new Hourly object
+                                hourlyArrayList.add(new Hourly(dayOfWeek, dateOnly, time, temperature, icon));
                             }
-                            //adapterHourly = new HourlyAdapters(items);
-                            recyclerView.setAdapter(adapterHourly);
-                            adapterHourly.notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            Log.e("ketqua", "Lỗi phân tích JSON: " + e.getMessage());
+                            hourlyAdapters.notifyDataSetChanged(); // Notify the adapter of data changes
+                        } catch (JSONException | ParseException e) {
+                            e.printStackTrace();
                         }
                     }
-                    },
+                },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String message = "Lỗi không xác định";
-                        if (error != null && error.getMessage() != null) {
-                            message = error.getMessage();
-                        } else if (error != null && error.networkResponse != null) {
-                            message = "Mã trạng thái: " + error.networkResponse.statusCode;
-                            // Bạn có thể thêm các thông tin khác từ networkResponse như header nếu cần
-                        }
-                        Log.e("ketqua", "Lỗi: " + message);
-                        Toast.makeText(MainActivity.this, "Lỗi: " + message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Please enter a valid city", Toast.LENGTH_SHORT).show();
                     }
                 });
+        requestQueue.add(stringRequest);
+    }
 
 
-        requestQueue.add(stringRequest);*/
+
+    private void playMusicForWeather(String icon) {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        switch (icon) {
+            case "01d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "02d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "03d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "04d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "09d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "10d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "11d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "13d":
+                // Add sound for snowy weather if you have one
+                break;
+            case "50d":
+                // Add sound for misty weather if you have one
+                break;
+        }
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+        }
     }
 }

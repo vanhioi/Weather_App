@@ -1,9 +1,14 @@
 package com.example.weather_app.Domains;
 
 public class Hourly {
+
+    private final String day;
+    private final String dayofweek;
     private String hour;
+    
     private int temp;
     private String picPath;
+
 
     public String getHour() {
         return hour;
@@ -29,9 +34,19 @@ public class Hourly {
         this.picPath = picPath;
     }
 
-    public Hourly(String hour, int temp, String picPath) {
+    public Hourly(String dayofweek, String day, String hour, int temp, String picPath) {
         this.hour = hour;
+        this.day = day;
+        this.dayofweek = dayofweek;
         this.temp = temp;
         this.picPath = picPath;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public String getDayofweek() {
+        return dayofweek;
     }
 }

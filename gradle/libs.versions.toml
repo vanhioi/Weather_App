@@ -12,6 +12,7 @@ googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.0.0"
 picasso = "2.71828"
 volley = "1.2.1"
+playServicesContextmanager = "9.4.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -25,6 +26,7 @@ recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+play-services-contextmanager = { group = "com.google.android.gms", name = "play-services-contextmanager", version.ref = "playServicesContextmanager" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
