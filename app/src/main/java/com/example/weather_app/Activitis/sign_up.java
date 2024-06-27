@@ -26,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class sign_up extends AppCompatActivity {
 
     EditText edtEmail, edtPassword ;
-    TextView txtSignup,txtLogin ;
+    TextView btnSignup,txtLogin ;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
 
@@ -50,7 +50,7 @@ public class sign_up extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
-        txtSignup = findViewById(R.id.txtSignup);
+        btnSignup = findViewById(R.id.btnSignup);
         progressBar = findViewById(R.id.progressBar);
         txtLogin = findViewById(R.id.txtLogin);
 
@@ -62,7 +62,7 @@ public class sign_up extends AppCompatActivity {
                 finish();
             }
         });
-        txtSignup.setOnClickListener(new View.OnClickListener() {
+        btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);

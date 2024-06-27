@@ -27,11 +27,11 @@ import com.google.firebase.auth.FirebaseUser;
 public class sign_in extends AppCompatActivity {
 
     EditText edtEmail , edtPassword ;
-    TextView txtCreateanaccount ,txtSignin ;
+    TextView txtCreateanaccount ,btnSignin ;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
 
-    @Override
+   /* @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -41,7 +41,7 @@ public class sign_in extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +53,18 @@ public class sign_in extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         txtCreateanaccount = findViewById(R.id.txtCreateanaccount);
         progressBar = findViewById(R.id.progressBar);
-        txtSignin = findViewById(R.id.txtSignin);
+        btnSignin = findViewById(R.id.btnSignin);
 
 
         txtCreateanaccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),sign_up.class);
+                Intent intent = new Intent( sign_in.this,sign_up.class);
                 startActivity(intent);
                 finish();
             }
         });
-        txtSignin.setOnClickListener(new View.OnClickListener() {
+        btnSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);

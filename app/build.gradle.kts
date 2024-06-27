@@ -44,4 +44,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation(libs.picasso)
     implementation(libs.volley)
+    implementation("com.google.firebase:firebase-auth")
+    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
 }
