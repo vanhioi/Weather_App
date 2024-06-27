@@ -46,8 +46,9 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MediaPlayer mediaPlayer;
+    private boolean isMuted = false;
     private List<String> quotes = new ArrayList<>();
-    ImageButton btnMap, btnUser;
+    ImageButton btnMap, btnUser, btnSoundToggle;
     EditText edtSearch;
     TextView txtcity, txtcountry, txtNext, txtStatus, txtday, txtTemp, txtTempH, txtTempL, txtRain, txtWind, txtHumidity, tempTxt, hourTxt, dayofweekTxt, dayTxt, txtQuotes;
     ImageView imgIcon, btnSearch;
@@ -81,6 +82,14 @@ public class MainActivity extends AppCompatActivity {
         dayofweekTxt =findViewById(R.id.dayofweekTxt);
         txtQuotes = findViewById(R.id.txtQuotes);
         recyclerView = findViewById(R.id.view1);
+        btnSoundToggle = findViewById(R.id.btnSoundToggle);
+
+        btnSoundToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSound();
+            }
+        });
 
         hourlyArrayList = new ArrayList<>();
         hourlyAdapters = new HourlyAdapters(hourlyArrayList, this);
@@ -160,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
                             long time = jsonObject.getLong("dt") * 1000;
                             Date date = new Date(time);
-                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE | dd-MM-yyyy | HH:mm", Locale.getDefault());
+                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE | dd-MM-yyyy", Locale.getDefault());
                             String formattedDate = sdf.format(date);
                             txtday.setText(formattedDate);
 
@@ -168,49 +177,8 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject(0);
                             String status = jsonObjectWeather.getString("main");
                             String icon = jsonObjectWeather.getString("icon");
-                            //Picasso.get().load("https://openweathermap.org/img/wn/" + icon + ".png").into(imgIcon);
 
-                            ImageView imgIcon = findViewById(R.id.imgIcon);
-                            ViewGroup.LayoutParams layoutParams = imgIcon.getLayoutParams();
-                            layoutParams.width = 500;
-                            layoutParams.height = 500;
-                            imgIcon.setLayoutParams(layoutParams);
-                            switch (icon) {
-                                case "01d":
-                                    Picasso.get().load(R.drawable.clearsky).into(imgIcon);
-                                    setBackground(R.drawable.nang);
-                                    break;
-                                case "02d":
-                                    Picasso.get().load(R.drawable.fewclouds).into(imgIcon);
-                                    setBackground(R.drawable.nang);
-                                    break;
-                                case "03d":
-                                    Picasso.get().load(R.drawable.scatteredclouds).into(imgIcon);
-                                    setBackground(R.drawable.nhieumay);
-                                    break;
-                                case "04d":
-                                    Picasso.get().load(R.drawable.scatteredclouds).into(imgIcon);
-                                    setBackground(R.drawable.nhieumay);
-                                    break;
-                                case "09d":
-                                    Picasso.get().load(R.drawable.rain_mua).into(imgIcon);
-                                    setBackground(R.drawable.mua);
-                                    break;
-                                case "10d":
-                                    Picasso.get().load(R.drawable.rain_mua).into(imgIcon);
-                                    setBackground(R.drawable.mua);
-                                    break;
-                                case "11d":
-                                    Picasso.get().load(R.drawable.thunderstorm).into(imgIcon);
-                                    setBackground(R.drawable.mua);
-                                    break;
-                                case "13d":
-                                    Picasso.get().load(R.drawable.snowy).into(imgIcon);
-                                    break;
-                                case "50d":
-                                    Picasso.get().load(R.drawable.storm).into(imgIcon);
-                                    break;
-                            }
+                            setWeatherIconAndBackground(icon);
 
                             playMusicForWeather(icon);
 
@@ -245,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
                             String country = jsonObjectSys.getString("country");
                             txtcountry.setText(country);
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -260,9 +227,91 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void setBackground(int drawableId) {
+    private void setWeatherIconAndBackground(String icon) {
+        ImageView imgIcon = findViewById(R.id.imgIcon);
+        ViewGroup.LayoutParams layoutParams = imgIcon.getLayoutParams();
+        layoutParams.width = 500;
+        layoutParams.height = 500;
+        imgIcon.setLayoutParams(layoutParams);
+
         ConstraintLayout mainLayout = findViewById(R.id.main);
-        mainLayout.setBackgroundResource(drawableId);
+
+        switch (icon) {
+            //n: đêm, d: ngày
+            case "01d":
+                imgIcon.setImageResource(R.drawable.clearsky);
+                mainLayout.setBackgroundResource(R.drawable.nang);
+                break;
+            case "01n":
+                imgIcon.setImageResource(R.drawable.clearsky);
+                mainLayout.setBackgroundResource(R.drawable.nang);
+                break;
+            case "02d":
+                imgIcon.setImageResource(R.drawable.fewclouds);
+                mainLayout.setBackgroundResource(R.drawable.nang);
+                break;
+            case "02n":
+                imgIcon.setImageResource(R.drawable.fewclouds);
+                mainLayout.setBackgroundResource(R.drawable.nang);
+                break;
+            case "03d":
+                imgIcon.setImageResource(R.drawable.scatteredclouds);
+                mainLayout.setBackgroundResource(R.drawable.nhieumay);
+                break;
+            case "03n":
+                imgIcon.setImageResource(R.drawable.scatteredclouds);
+                mainLayout.setBackgroundResource(R.drawable.nhieumay);
+                break;
+            case "04d":
+                imgIcon.setImageResource(R.drawable.scatteredclouds);
+                mainLayout.setBackgroundResource(R.drawable.nhieumay);
+                break;
+            case "04n":
+                imgIcon.setImageResource(R.drawable.scatteredclouds);
+                mainLayout.setBackgroundResource(R.drawable.nhieumay);
+                break;
+            case "09d":
+                imgIcon.setImageResource(R.drawable.rain_mua);
+                mainLayout.setBackgroundResource(R.drawable.mua);
+                break;
+            case "09n":
+                imgIcon.setImageResource(R.drawable.rain_mua);
+                mainLayout.setBackgroundResource(R.drawable.mua);
+                break;
+            case "10d":
+                imgIcon.setImageResource(R.drawable.rain_mua);
+                mainLayout.setBackgroundResource(R.drawable.mua);
+                break;
+            case "10n":
+                imgIcon.setImageResource(R.drawable.rain_mua);
+                mainLayout.setBackgroundResource(R.drawable.mua);
+                break;
+            case "11d":
+                imgIcon.setImageResource(R.drawable.thunderstorm);
+                mainLayout.setBackgroundResource(R.drawable.mua);
+                break;
+            case "11n":
+                imgIcon.setImageResource(R.drawable.thunderstorm);
+                mainLayout.setBackgroundResource(R.drawable.mua);
+                break;
+            case "13d":
+                imgIcon.setImageResource(R.drawable.snowy);
+                break;
+            case "13n":
+                imgIcon.setImageResource(R.drawable.snowy);
+                break;
+            case "50d":
+                imgIcon.setImageResource(R.drawable.storm);
+                break;
+            case "50n":
+                imgIcon.setImageResource(R.drawable.storm);
+                break;
+            default:
+                // Set a default icon and background
+                imgIcon.setImageResource(R.drawable.fewclouds);
+                mainLayout.setBackgroundResource(R.drawable.mua);
+                break;
+        }
     }
 
     public void GetHourlyData(String data) {
@@ -275,18 +324,16 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArrayList = jsonObject.getJSONArray("list");
-                            hourlyArrayList.clear(); // Clear the previous data
+                            hourlyArrayList.clear();
+
                             for (int i = 0; i < jsonArrayList.length(); i++) {
                                 JSONObject jsonObjectList = jsonArrayList.getJSONObject(i);
 
-                                // Get the date and time for the forecast
                                 String dt_txt = jsonObjectList.getString("dt_txt");
 
-                                // Parse the date-time string
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                                 Date date = dateFormat.parse(dt_txt);
 
-                                // Extract day of the week and date
                                 SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
                                 SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
                                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -295,20 +342,19 @@ public class MainActivity extends AppCompatActivity {
                                 String dateOnly = dateOnlyFormat.format(date);
                                 String time = timeFormat.format(date);
 
-                                // Get main object for temperature
                                 JSONObject jsonObjectMain = jsonObjectList.getJSONObject("main");
+                                //String status = jsonObjectList.getString("main");
                                 String nhietdo = jsonObjectMain.getString("temp");
                                 int temperature = (int) Math.round(Double.parseDouble(nhietdo));
+                                //txtStatus.setText(status);
 
-                                // Get weather array for icon and description
                                 JSONArray jsonArrayWeather = jsonObjectList.getJSONArray("weather");
                                 JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject(0);
                                 String icon = jsonObjectWeather.getString("icon");
 
-                                // Create a new Hourly object
                                 hourlyArrayList.add(new Hourly(dayOfWeek, dateOnly, time, temperature, icon));
                             }
-                            hourlyAdapters.notifyDataSetChanged(); // Notify the adapter of data changes
+                            hourlyAdapters.notifyDataSetChanged();
                         } catch (JSONException | ParseException e) {
                             e.printStackTrace();
                         }
@@ -323,44 +369,84 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-
-
     private void playMusicForWeather(String icon) {
         if (mediaPlayer != null) {
             mediaPlayer.release();
-            mediaPlayer = null;
         }
+
         switch (icon) {
             case "01d":
-                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
-                break;
+            case "01n":
             case "02d":
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
-            case "03d":
+            case "02n":
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
+            case "03d":
+            case "03n":
             case "04d":
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
-            case "09d":
+            case "04n":
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
+            case "09d":
+            case "09n":
             case "10d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "10n":
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
             case "11d":
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
+            case "11n":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
             case "13d":
-                // Add sound for snowy weather if you have one
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "13n":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
             case "50d":
-                // Add sound for misty weather if you have one
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            case "50n":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
+            default:
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
         }
+
+        mediaPlayer.setLooping(true);
+        if (isMuted) {
+            mediaPlayer.setVolume(0, 0);
+        }
+        mediaPlayer.start();
+    }
+
+    private void toggleSound() {
         if (mediaPlayer != null) {
-            mediaPlayer.start();
+            if (isMuted) {
+                mediaPlayer.setVolume(1, 1);
+                btnSoundToggle.setImageResource(R.drawable.ic_volume_on);
+            } else {
+                mediaPlayer.setVolume(0, 0);
+                btnSoundToggle.setImageResource(R.drawable.ic_volume_off);
+            }
+            isMuted = !isMuted;
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
         }
     }
 }

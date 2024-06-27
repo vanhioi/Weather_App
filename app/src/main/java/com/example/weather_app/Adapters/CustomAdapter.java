@@ -21,10 +21,19 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Weather> weatherList;
+    private OnItemClickListener listener;
 
     public CustomAdapter(Context context, ArrayList<Weather> weatherList) {
         this.context = context;
         this.weatherList = weatherList;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Weather weather);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -37,18 +46,19 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Weather weather = weatherList.get(position);
-        holder.txtDay.setText(weather.Day);
-        holder.statusTxt.setText(weather.Status);
-        holder.templowTxt.setText(weather.MinTemp + "°C");
-        holder.temphighTxt.setText(weather.MaxTemp + "°C");
-        Picasso.get().load("https://openweathermap.org/img/wn/" + weather.Image + ".png").into(holder.pic);
+        holder.txtDay.setText(weather.getDay());
+        holder.statusTxt.setText(weather.getStatus());
+        holder.templowTxt.setText(weather.getTempMin() + "°C");
+        holder.temphighTxt.setText(weather.getTempMax() + "°C");
+        Picasso.get().load("https://openweathermap.org/img/wn/" + weather.getIcon() + ".png").into(holder.pic);
 
-        //Nhấp vào từng RecyclerView nhưng đang bị lỗi không hiển thị dữ liệu
+        // Bắt sự kiện nhấn vào từng mục trong RecyclerView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, FutureActivity.class);
-                context.startActivity(intent);
+                if (listener != null) {
+                    listener.onItemClick(weather);
+                }
             }
         });
     }

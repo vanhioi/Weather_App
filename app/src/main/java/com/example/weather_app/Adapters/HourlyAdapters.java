@@ -1,5 +1,6 @@
 package com.example.weather_app.Adapters;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 
+import com.example.weather_app.Activitis.FutureActivity;
 import com.example.weather_app.Activitis.MainActivity;
 import com.example.weather_app.Domains.Hourly;
 import com.example.weather_app.R;
@@ -50,6 +52,21 @@ public class HourlyAdapters extends RecyclerView.Adapter<HourlyAdapters.viewHold
 
         int drawableResourceId = holder.itemView.getResources()
                 .getIdentifier(items.get(position).getPicPath(), "drawable", holder.itemView.getContext().getPackageName());
+
+        //holder.itemView.setBackgroundColor(android.graphics.Color.parseColor(Items.getColor()));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FutureActivity.class);
+                intent.putExtra("dayOfWeek", Items.getDayofweek());
+                intent.putExtra("day", Items.getDay());
+                intent.putExtra("time", Items.getHour());
+                intent.putExtra("temperature", Items.getTemp());
+                intent.putExtra("icon", Items.getPicPath());
+                //intent.putExtra("status", Items.getstatus());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

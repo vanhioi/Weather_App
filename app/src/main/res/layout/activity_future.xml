@@ -94,7 +94,7 @@
                             android:textSize="43sp" />
 
                         <TextView
-                            android:id="@+id/textView12"
+                            android:id="@+id/txtStatus"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Mostly Cloudy"
