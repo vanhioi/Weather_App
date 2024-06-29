@@ -10,6 +10,7 @@ public class Weather {
     private String wind;
     private String rain;
     private String humidity;
+    private long time;
 
     public Weather(String day, String status, String icon, String tempMax, String tempMin, String temp, String wind, String rain, String humidity) {
         this.day = day;
@@ -57,5 +58,9 @@ public class Weather {
 
     public String getHumidity() {
         return humidity;
+    }
+
+    public long getTime() {
+        return time;
     }
 }

@@ -31,7 +31,7 @@ public class sign_in extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressBar progressBar;
 
-   /* @Override
+   @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -41,7 +41,7 @@ public class sign_in extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-    }*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

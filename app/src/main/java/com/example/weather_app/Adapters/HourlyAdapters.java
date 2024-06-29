@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class HourlyAdapters extends RecyclerView.Adapter<HourlyAdapters.viewHolder> {
     private ArrayList<Hourly> items;
     private Context context;
-    
+
 
     public HourlyAdapters(ArrayList<Hourly> items, MainActivity mainActivity) {
         this.items = items;

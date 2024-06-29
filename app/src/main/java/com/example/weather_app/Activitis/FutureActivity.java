@@ -31,13 +31,14 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class FutureActivity extends AppCompatActivity {
 
     String tenthanhpho = "";
     ImageView imgBack, pic;
     RecyclerView recyclerView;
-    TextView txtCityName, txtTemp, txtStatus, txtDay, txtRain, txtWind, txtHumidity, txtday;
+    TextView txtCityName, txtTemp, txtStatus, txtDay, txtRain, txtWind, txtHumidity, dayTxt;
     CustomAdapter customAdapter;
     ArrayList<Weather> weatherArray;
 
@@ -47,7 +48,7 @@ public class FutureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_future);
 
-        pic =findViewById(R.id.pic);
+        pic = findViewById(R.id.pic);
         imgBack = findViewById(R.id.imgBack);
         recyclerView = findViewById(R.id.list);
         txtCityName = findViewById(R.id.txtCityName);
@@ -56,10 +57,8 @@ public class FutureActivity extends AppCompatActivity {
         txtRain = findViewById(R.id.txtRain);
         txtWind = findViewById(R.id.txtWind);
         txtHumidity = findViewById(R.id.txtHumidity);
-        txtday = findViewById(R.id.txtday);
+        dayTxt = findViewById(R.id.dayTxt);
         txtStatus = findViewById(R.id.txtStatus);
-
-        loadWeatherData();
 
         weatherArray = new ArrayList<>();
         customAdapter = new CustomAdapter(this, weatherArray);
@@ -68,15 +67,17 @@ public class FutureActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String city = intent.getStringExtra("name");
-        //Log.d("ketqua", "Dữ liệu truyền qua: " + city);
+
         if (city == null || city.equals("")) {
             tenthanhpho = "Saigon";
         } else {
             tenthanhpho = city;
         }
+
+        GetCurrentWeatherData(tenthanhpho);
+
         Get7DaysData(tenthanhpho);
 
-        // Bắt sự kiện nhấn nút back
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,23 +85,80 @@ public class FutureActivity extends AppCompatActivity {
             }
         });
 
-        // Bắt sự kiện nhấn vào từng mục trong RecyclerView
         customAdapter.setOnItemClickListener(new CustomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Weather weather) {
                 updateWeatherDetails(weather);
             }
         });
-
-        // Lấy dữ liệu 7 ngày dự báo ban đầu
-        Get7DaysData(tenthanhpho);
-
     }
 
-    private void loadWeatherData() {
-        // Your code to load weather data into weatherList
+    private void updateWeatherDetails(Weather weather) {
+        txtDay.setText(weather.getDay());
+        txtTemp.setText(weather.getTemp() + "°C");
+        txtRain.setText(weather.getRain() + "%");
+        txtWind.setText(weather.getWind() + "m/s");
+        txtHumidity.setText(weather.getHumidity() + "%");
+        txtStatus.setText(weather.getStatus());
+        Picasso.get().load("https://openweathermap.org/img/wn/" + weather.getIcon() + ".png").into(pic);
     }
 
+    public void GetCurrentWeatherData(String data) {
+        RequestQueue requestQueue = Volley.newRequestQueue(FutureActivity.this);
+        String url = "https://api.openweathermap.org/data/2.5/weather?q=" + data + "&units=metric&appid=48d34576ad87840b7f38187a804d0101";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String day = jsonObject.getString("dt");
+
+                            long time = jsonObject.getLong("dt") * 1000;
+                            Date date = new Date(time);
+                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE | dd-MM-yyyy", Locale.getDefault());
+                            String formattedDate = sdf.format(date);
+                            dayTxt.setText(formattedDate);
+
+                            JSONArray jsonArrayWeather = jsonObject.getJSONArray("weather");
+                            JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject(0);
+                            String status = jsonObjectWeather.getString("main");
+                            String icon = jsonObjectWeather.getString("icon");
+
+                            JSONObject jsonObjectMain = jsonObject.getJSONObject("main");
+                            String nhietdo = jsonObjectMain.getString("temp");
+                            String nhietdocaonhat = jsonObjectMain.getString("temp_max");
+                            String nhietdothapnhat = jsonObjectMain.getString("temp_min");
+                            String doam = jsonObjectMain.getString("humidity");
+
+                            Double a = Double.valueOf(nhietdo);
+                            String Nhietdo = String.valueOf(a.intValue());
+
+                            txtTemp.setText(Nhietdo + "°C");
+                            txtHumidity.setText(doam + "%");
+                            txtStatus.setText(status);
+
+                            JSONObject jsonObjectWind = jsonObject.getJSONObject("wind");
+                            String gio = jsonObjectWind.getString("speed");
+                            txtWind.setText(gio + "m/s");
+
+                            JSONObject jsonObjectRain = jsonObject.getJSONObject("clouds");
+                            String mua = jsonObjectRain.getString("all");
+                            txtRain.setText(mua + "%");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(FutureActivity.this, "Lỗi: " + error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+        requestQueue.add(stringRequest);
+    }
 
     private void Get7DaysData(String data) {
         String url = "https://api.openweathermap.org/data/2.5/forecast?q=" + data + "&units=metric&cnt=40&appid=48d34576ad87840b7f38187a804d0101";
@@ -167,15 +225,5 @@ public class FutureActivity extends AppCompatActivity {
                     }
                 });
         requestQueue.add(stringRequest);
-    }
-    // Phương thức để cập nhật chi tiết thời tiết khi người dùng nhấp vào một mục trong RecyclerView
-    private void updateWeatherDetails(Weather weather) {
-        txtDay.setText(weather.getDay());
-        txtTemp.setText(weather.getTemp() + "°C");
-        txtRain.setText(weather.getRain() + "%");
-        txtWind.setText(weather.getWind() + "m/s");
-        txtHumidity.setText(weather.getHumidity() + "%");
-        txtStatus.setText(weather.getStatus());
-        Picasso.get().load("https://openweathermap.org/img/wn/" + weather.getIcon() + ".png").into(pic);
     }
 }

@@ -43,6 +43,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import java.util.ArrayList;
+
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MediaPlayer mediaPlayer;
@@ -107,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
         btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GGMap.class);
+                Intent intent = new Intent(MainActivity.this, Hourly_chart.class);
+                String cityName = edtSearch.getText().toString();
+                intent.putExtra("name", cityName);
                 startActivity(intent);
             }
         });
@@ -134,13 +144,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addQuotes() {
-        quotes.add("Hãy sống như ngày mai bạn sẽ chết.");
-        quotes.add("“Phấn đấu không phải để thành công, mà là để trở nên có giá trị.”");
-        quotes.add("“Vinh quang lớn nhất trong cuộc sống không phải là không bao giờ gục ngã, mà là vươn lên sau mỗi lần vấp ngã.”");
-        quotes.add("“Hạnh phúc không phải là thứ có sẵn. Nó đến từ hành động của chính bạn.”");
-        quotes.add("Yêu thương là điều quý giá nhất.");
-        quotes.add("“Cách duy nhất để làm những công việc tuyệt vời là yêu những gì bạn làm.”");
-        // Thêm các câu nói khác
+        quotes.add("“You don’t have to be great to start, but you have to start to be great.”");
+        quotes.add("“To be indispensable, one must always stand out.”");
+        quotes.add("“Your speed doesn’t matter as long as you keep moving forward.”");
+        quotes.add("“Failure only exists when you cease to make an effort.”");
+        quotes.add("“Gracefulness is not about attracting attention, it’s about leaving a lasting impression.”");
+        quotes.add("“The sole thing we should dread is fear itself.”");
+        quotes.add("“For what reason do we tumble? So we can acquire the knowledge to lift ourselves.”");
+        quotes.add("“The more effort you put in, the more fortunate you become.”");
+        quotes.add("“Do it or don’t do it, there’s no trying.”");
+        quotes.add("“It’s never too late to become what you could have been.”");
+        quotes.add("“You can’t rewind and alter the beginning, but you can commence from where you are and modify the conclusion.”");
+        quotes.add("“You can’t rewind and alter the beginning, but you can commence from where you are and modify the conclusion.”");
+        quotes.add("“Life, if not challenged, is not worth living.”");
+        quotes.add("“If you can’t fly, walk; If you can’t run, walk; If walking is difficult, crawl. However, you must keep moving forward.”");
+        quotes.add("“On the journey to success, there is no sign of laziness.”");
+        quotes.add("“The deepest pride in life is not to never fall, but to be strong after each fall. ”");
+        quotes.add("“Don’t constantly watch the clock; take action and persevere.”");
+        quotes.add("“Don’t sit there waiting for an opportunity; create them yourself.”");
+        quotes.add("“Keep your face always toward the sunshine, and shadows will fall behind you.”");
+        quotes.add("“If I cannot do great things, I can do small things in a great way.”");
+        quotes.add("“Your life only gets better when you get better.”");
+        quotes.add("“You are never too old to set another goal or to dream a new dream.”");
+        quotes.add("“I can’t change the direction of the wind, but I can adjust my sails to always reach my destination.” ");
+        quotes.add("“Believe you can and you’re halfway there");
+        quotes.add("“All our dreams can come true if we have the courage to pursue them.” ");
+        quotes.add("“Happiness is not something ready made. It comes from your own actions.” ");
+        quotes.add("“We become what we think about.” ");
     }
 
     private String getRandomQuote() {

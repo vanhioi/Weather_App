@@ -14,7 +14,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-        
+
     }
 
     buildTypes {
@@ -46,4 +46,7 @@ dependencies {
     implementation(libs.volley)
     implementation("com.google.firebase:firebase-auth")
     implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 }
