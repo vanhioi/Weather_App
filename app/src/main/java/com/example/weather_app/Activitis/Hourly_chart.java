@@ -156,11 +156,13 @@ public class Hourly_chart extends AppCompatActivity {
         // Tạo và cấu hình bộ dữ liệu cho biểu đồ cột
         BarDataSet rainDataSet = new BarDataSet(rainEntries, "Lượng mưa (mm)");
         rainDataSet.setColor(getResources().getColor(R.color.blue));
+        rainDataSet.setValueTextSize(12f);
 
         // Tạo và cấu hình bộ dữ liệu cho biểu đồ đường
         LineDataSet tempDataSet = new LineDataSet(tempEntries, "Nhiệt độ (°C)");
         tempDataSet.setColor(getResources().getColor(R.color.orange));
         tempDataSet.setCircleColor(getResources().getColor(R.color.green));
+        tempDataSet.setValueTextSize(12f);
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "So sánh thời tiết");
         pieDataSet.setColors(new int[]{
@@ -188,6 +190,7 @@ public class Hourly_chart extends AppCompatActivity {
         barXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         barXAxis.setGranularity(1f);
         barXAxis.setGranularityEnabled(true);
+        barXAxis.setTextSize(14f);
 
         // Cấu hình trục X cho biểu đồ đường
         XAxis lineXAxis = lineChart.getXAxis();
@@ -195,14 +198,17 @@ public class Hourly_chart extends AppCompatActivity {
         lineXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         lineXAxis.setGranularity(1f);
         lineXAxis.setGranularityEnabled(true);
+        lineXAxis.setTextSize(14f);
 
         // Cấu hình trục Y cho biểu đồ cột
         YAxis barLeftAxis = barChart.getAxisLeft();
         barLeftAxis.setAxisMinimum(0f);
+        barLeftAxis.setTextSize(14f);
 
         // Cấu hình trục Y cho biểu đồ đường
         YAxis lineLeftAxis = lineChart.getAxisLeft();
         lineLeftAxis.setAxisMinimum(0f);
+        lineLeftAxis.setTextSize(14f);
 
         // không hiển thị trục Y bên phải cho cả hai biểu đồ
         barChart.getAxisRight().setEnabled(false);
@@ -211,17 +217,20 @@ public class Hourly_chart extends AppCompatActivity {
         // Thiết lập mô tả cho biểu đồ cột
         Description barDescription = new Description();
         barDescription.setText("Lượng mưa (mm)");
+        barDescription.setTextSize(14f);
         barChart.setDescription(barDescription);
         barChart.animateY(1400); //thiết lập hiệu ứng animation cho biểu đồ cột.
 
         // Thiết lập mô tả cho biểu đồ đường
         Description lineDescription = new Description();
         lineDescription.setText("Nhiệt độ (°C)");
+        lineDescription.setTextSize(14f);
         lineChart.setDescription(lineDescription);
         lineChart.animateY(1400); //thiết lập hiệu ứng animation cho biểu đồ đường.
 
         pieChart.getDescription().setEnabled(false);
         pieChart.setEntryLabelColor(getResources().getColor(R.color.black));
+        pieChart.setEntryLabelTextSize(14f);
         pieChart.animateY(1400); ////thiết lập hiệu ứng animation cho biểu đồ tròn.
 
         // Làm mới biểu đồ để hiển thị dữ liệu mới

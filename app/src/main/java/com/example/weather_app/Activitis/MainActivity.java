@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,10 +63,11 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private boolean isMuted = false;
     private List<String> quotes = new ArrayList<>();
-    ImageButton btnMap, btnUser, btnSoundToggle;
+    ImageButton btnMap, btnUser;
+    SeekBar musicTime;
     EditText edtSearch;
     TextView txtcity, txtcountry, txtNext, txtStatus, txtday, txtTemp, txtTempH, txtTempL, txtRain, txtWind, txtHumidity, tempTxt, hourTxt, dayofweekTxt, dayTxt, txtQuotes;
-    ImageView imgIcon, btnSearch;
+    ImageView imgIcon, btnSearch, btnSoundToggle;
     String city = "";
     HourlyAdapters hourlyAdapters;
     ArrayList<Hourly> hourlyArrayList;
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         txtQuotes = findViewById(R.id.txtQuotes);
         recyclerView = findViewById(R.id.view1);
         btnSoundToggle = findViewById(R.id.btnSoundToggle);
+        musicTime = findViewById(R.id.musicTime);
 
        createNotificationChannel();
 
@@ -148,6 +151,26 @@ public class MainActivity extends AppCompatActivity {
                 String city = edtSearch.getText().toString();
                 intent.putExtra("name", city);
                 startActivity(intent);
+            }
+        });
+
+        // Thiết lập SeekBar và xử lý sự kiện khi người dùng kéo SeekBar
+        musicTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser && mediaPlayer != null) {
+                    mediaPlayer.seekTo(progress); // Đặt thời gian của MediaPlayer tới vị trí mới
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Không cần xử lý ở đây
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Không cần xử lý ở đây
             }
         });
     }
@@ -298,8 +321,8 @@ public class MainActivity extends AppCompatActivity {
                             Double c = Double.valueOf(nhietdothapnhat);
                             String Nhietdothapnhat = String.valueOf(c.intValue());
 
-                            txtTempH.setText("H:" + Nhietdocaonhat);
-                            txtTempL.setText("L:" + Nhietdothapnhat);
+                            txtTempH.setText("H:" + Nhietdocaonhat + "°C");
+                            txtTempL.setText("L:" + Nhietdothapnhat + "°C");
                             txtTemp.setText(Nhietdo + "°C");
                             txtHumidity.setText(doam + "%");
                             txtStatus.setText(status);
@@ -345,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
             //n: đêm, d: ngày
             case "01d":
                 imgIcon.setImageResource(R.drawable.clearsky);
-                mainLayout.setBackgroundResource(R.drawable.day);
+                mainLayout.setBackgroundResource(R.drawable.nang);
                 break;
             case "01n":
                 imgIcon.setImageResource(R.drawable.clear_sky);
@@ -353,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "02d":
                 imgIcon.setImageResource(R.drawable.fewclouds);
-                mainLayout.setBackgroundResource(R.drawable.day);
+                mainLayout.setBackgroundResource(R.drawable.nang);
                 break;
             case "02n":
                 imgIcon.setImageResource(R.drawable.n_fewclouds);
@@ -480,15 +503,23 @@ public class MainActivity extends AppCompatActivity {
 
         switch (icon) {
             case "01d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sunny);
+                break;
             case "01n":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.night);
+                break;
             case "02d":
-                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sunny);
                 break;
             case "02n":
-                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.night);
                 break;
             case "03d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sunny);
+                break;
             case "03n":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.night);
+                break;
             case "04d":
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
@@ -496,7 +527,11 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
             case "09d":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
             case "09n":
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                break;
             case "10d":
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
@@ -510,19 +545,19 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
             case "13d":
-                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.night);
                 break;
             case "13n":
-                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.night);
                 break;
             case "50d":
                 mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
                 break;
             case "50n":
-                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.night);
                 break;
             default:
-                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.rainy);
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.night);
                 break;
         }
 
@@ -531,68 +566,38 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.setVolume(0, 0);
         }
         mediaPlayer.start();
+
+        // Khởi tạo thanh SeekBar với độ dài tương ứng với thời lượng của bài hát
+        musicTime.setMax(mediaPlayer.getDuration());
+
+        // Cập nhật thanh SeekBar mỗi khi thời gian của bài hát thay đổi
+        new Thread(() -> {
+            while (mediaPlayer != null) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(this::updateSeekBar);
+            }
+        }).start();
     }
 
-    /*private void createNotificationChannel() {
-        // Tạo NotificationChannel, nhưng chỉ trên API 26+ vì
-        // lớp NotificationChannel mới có trong thư viện hỗ trợ từ API 26 trở lên
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Đặt tên kênh thông báo
-            CharSequence name = "Thời tiết hôm nay thế nào?";
-            // Mô tả kênh thông báo
-            String description = "Thời tiết hôm nay";
-            // Đặt mức độ quan trọng của thông báo là cao
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            // Tạo một đối tượng NotificationChannel mới với ID, tên và mức độ quan trọng
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            // Đặt mô tả cho kênh thông báo
-            channel.setDescription(description);
-            // Đăng ký kênh với hệ thống; không thể thay đổi mức độ quan trọng
-            // hoặc hành vi thông báo khác sau khi đăng ký
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-            Log.d("NotificationChannel", "Notification channel created.");
-        } else {
-            Log.d("NotificationChannel", "Notification channel not needed.");
+    // Phương thức cập nhật thanh SeekBar
+    private void updateSeekBar() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            musicTime.setProgress(mediaPlayer.getCurrentPosition());
         }
-    }*/
-
-    /*private void sendWeatherAlert(String weatherCondition) {
-        // Nếu điều kiện thời tiết chứa từ "Rain" (mưa)
-        if (weatherCondition.contains("Rain")) {
-            // Tạo một đối tượng NotificationCompat.Builder mới với kênh thông báo đã tạo
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    // Đặt biểu tượng nhỏ cho thông báo
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    // Đặt tiêu đề cho thông báo là "Thời tiết hôm nay thế nào?"
-                    .setContentTitle("Thời tiết hôm nay thế nào?")
-                    .setContentText("Trời mưa rồi đó, nhớ mang theo ô")
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    // Đặt thông báo tự động hủy khi người dùng nhấn vào
-                    .setAutoCancel(true);
-
-            // Tạo một Intent để mở MainActivity khi người dùng nhấn vào thông báo
-            Intent intent = new Intent(this, MainActivity.class);
-            // Tạo một PendingIntent để gắn với Intent vừa tạo
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            // Gán PendingIntent cho thông báo
-            builder.setContentIntent(pendingIntent);
-
-            // Lấy đối tượng NotificationManager từ hệ thống
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            // Gửi thông báo với ID là 0
-            notificationManager.notify(0, builder.build());
-        }
-    }*/
+    }
 
     private void toggleSound() {
         if (mediaPlayer != null) {
             if (isMuted) {
                 mediaPlayer.setVolume(1, 1);
-                btnSoundToggle.setImageResource(R.drawable.ic_volume_on);
+                btnSoundToggle.setImageResource(android.R.drawable.ic_media_pause);
             } else {
                 mediaPlayer.setVolume(0, 0);
-                btnSoundToggle.setImageResource(R.drawable.ic_volume_off);
+                btnSoundToggle.setImageResource(android.R.drawable.ic_media_play);
             }
             isMuted = !isMuted;
         }
@@ -601,6 +606,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (mediaPlayer != null) {
+            btnSoundToggle.stopNestedScroll();
             mediaPlayer.stop();
             mediaPlayer.release();
         }

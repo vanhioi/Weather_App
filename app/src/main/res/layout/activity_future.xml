@@ -40,7 +40,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="?attr/homeAsUpIndicator" />
+                    app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -49,7 +49,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -60,9 +59,9 @@
 
                     <ImageView
                         android:id="@+id/pic"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
                         app:srcCompat="@drawable/fewclouds" />
 
                     <LinearLayout
@@ -80,7 +79,11 @@
                             android:text="Location"
                             android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:textSize="20sp" />
+                            android:textSize="24sp"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"/>
 
                         <TextView
                             android:id="@+id/dayTxt"
@@ -88,7 +91,11 @@
                             android:layout_height="wrap_content"
                             android:text="Tomorow"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"/>
 
                         <TextView
                             android:id="@+id/txtTemp"
@@ -99,7 +106,11 @@
                             android:text="16"
                             android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:textSize="63sp" />
+                            android:textSize="50sp"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"/>
 
                         <TextView
                             android:id="@+id/txtStatus"
@@ -107,7 +118,11 @@
                             android:layout_height="wrap_content"
                             android:text="Mostly Cloudy"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -115,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="16dp"
-                    android:background="@drawable/background2"
+                    android:background="@drawable/backgroundwhite60"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -139,7 +154,12 @@
                             android:text="22%"
                             android:textAlignment="center"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"
+                            android:textSize="14sp"/>
 
                         <TextView
                             android:id="@+id/textView2"
@@ -148,7 +168,12 @@
                             android:text="Mưa"
                             android:textAlignment="center"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"
+                            android:textSize="14sp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -172,7 +197,12 @@
                             android:text="12 km/h"
                             android:textAlignment="center"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"
+                            android:textSize="14sp"/>
 
                         <TextView
                             android:id="@+id/textView7"
@@ -181,7 +211,12 @@
                             android:text="Gió"
                             android:textAlignment="center"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"
+                            android:textSize="14sp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -205,7 +240,12 @@
                             android:text="8%"
                             android:textAlignment="center"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"
+                            android:textSize="14sp"/>
 
                         <TextView
                             android:id="@+id/textView6"
@@ -214,7 +254,12 @@
                             android:text="Độ ẩm"
                             android:textAlignment="center"
                             android:textColor="@color/white"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="6"
+                            android:textSize="14sp"/>
 
                     </LinearLayout>
 
@@ -226,10 +271,11 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
+                android:layout_margin="26dp"
                 android:layout_weight="1"
                 android:nestedScrollingEnabled="true"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:background="@drawable/backgroundwhite60"/>
         </LinearLayout>
     </ScrollView>
 

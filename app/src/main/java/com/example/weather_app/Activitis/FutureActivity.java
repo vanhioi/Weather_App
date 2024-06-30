@@ -93,9 +93,9 @@ public class FutureActivity extends AppCompatActivity {
             @Override
             public void run() {
                 animateBackgroundChange();
-                handler.postDelayed(this, 30000); // 30s
+                handler.postDelayed(this, 15000); // 30s
             }
-        }, 30000); // 30s
+        }, 15000); // 30s
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
