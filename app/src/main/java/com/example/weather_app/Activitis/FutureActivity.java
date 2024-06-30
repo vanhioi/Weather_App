@@ -1,8 +1,12 @@
 package com.example.weather_app.Activitis;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,11 +40,14 @@ import java.util.Locale;
 public class FutureActivity extends AppCompatActivity {
 
     String tenthanhpho = "";
-    ImageView imgBack, pic;
+    ImageView imgBack, pic, backgroundImageView;
     RecyclerView recyclerView;
     TextView txtCityName, txtTemp, txtStatus, txtDay, txtRain, txtWind, txtHumidity, dayTxt;
     CustomAdapter customAdapter;
     ArrayList<Weather> weatherArray;
+    int currentBackgroundIndex = 0;
+    int[] backgroundImages = {R.drawable.mua, R.drawable.day2, R.drawable.night};
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -48,6 +55,7 @@ public class FutureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_future);
 
+        backgroundImageView = findViewById(R.id.backgroundImageView);
         pic = findViewById(R.id.pic);
         imgBack = findViewById(R.id.imgBack);
         recyclerView = findViewById(R.id.list);
@@ -78,6 +86,17 @@ public class FutureActivity extends AppCompatActivity {
 
         Get7DaysData(tenthanhpho);
 
+        backgroundImageView.setImageResource(backgroundImages[currentBackgroundIndex]);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                animateBackgroundChange();
+                handler.postDelayed(this, 30000); // 30s
+            }
+        }, 30000); // 30s
+
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +110,22 @@ public class FutureActivity extends AppCompatActivity {
                 updateWeatherDetails(weather);
             }
         });
+    }
+
+    private void animateBackgroundChange() {
+        currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(backgroundImageView, "alpha", 1f, 0f);
+        fadeOut.setDuration(1000);
+        fadeOut.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                backgroundImageView.setImageResource(backgroundImages[currentBackgroundIndex]);
+                ObjectAnimator fadeIn = ObjectAnimator.ofFloat(backgroundImageView, "alpha", 0f, 1f);
+                fadeIn.setDuration(1000);
+                fadeIn.start();
+            }
+        });
+        fadeOut.start();
     }
 
     private void updateWeatherDetails(Weather weather) {

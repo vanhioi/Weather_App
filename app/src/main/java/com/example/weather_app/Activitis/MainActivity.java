@@ -1,8 +1,13 @@
 package com.example.weather_app.Activitis;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     String city = "";
     HourlyAdapters hourlyAdapters;
     ArrayList<Hourly> hourlyArrayList;
+    private static final String CHANNEL_ID = "Thời tiết hôm nay thế nào?";
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
         txtQuotes = findViewById(R.id.txtQuotes);
         recyclerView = findViewById(R.id.view1);
         btnSoundToggle = findViewById(R.id.btnSoundToggle);
+
+       createNotificationChannel();
 
         btnSoundToggle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,33 +153,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addQuotes() {
-        quotes.add("“You don’t have to be great to start, but you have to start to be great.”");
-        quotes.add("“To be indispensable, one must always stand out.”");
-        quotes.add("“Your speed doesn’t matter as long as you keep moving forward.”");
-        quotes.add("“Failure only exists when you cease to make an effort.”");
-        quotes.add("“Gracefulness is not about attracting attention, it’s about leaving a lasting impression.”");
-        quotes.add("“The sole thing we should dread is fear itself.”");
-        quotes.add("“For what reason do we tumble? So we can acquire the knowledge to lift ourselves.”");
-        quotes.add("“The more effort you put in, the more fortunate you become.”");
-        quotes.add("“Do it or don’t do it, there’s no trying.”");
-        quotes.add("“It’s never too late to become what you could have been.”");
-        quotes.add("“You can’t rewind and alter the beginning, but you can commence from where you are and modify the conclusion.”");
-        quotes.add("“You can’t rewind and alter the beginning, but you can commence from where you are and modify the conclusion.”");
-        quotes.add("“Life, if not challenged, is not worth living.”");
-        quotes.add("“If you can’t fly, walk; If you can’t run, walk; If walking is difficult, crawl. However, you must keep moving forward.”");
-        quotes.add("“On the journey to success, there is no sign of laziness.”");
-        quotes.add("“The deepest pride in life is not to never fall, but to be strong after each fall. ”");
-        quotes.add("“Don’t constantly watch the clock; take action and persevere.”");
-        quotes.add("“Don’t sit there waiting for an opportunity; create them yourself.”");
-        quotes.add("“Keep your face always toward the sunshine, and shadows will fall behind you.”");
-        quotes.add("“If I cannot do great things, I can do small things in a great way.”");
-        quotes.add("“Your life only gets better when you get better.”");
-        quotes.add("“You are never too old to set another goal or to dream a new dream.”");
-        quotes.add("“I can’t change the direction of the wind, but I can adjust my sails to always reach my destination.” ");
-        quotes.add("“Believe you can and you’re halfway there");
-        quotes.add("“All our dreams can come true if we have the courage to pursue them.” ");
-        quotes.add("“Happiness is not something ready made. It comes from your own actions.” ");
-        quotes.add("“We become what we think about.” ");
+        quotes.add("“Bạn không cần phải xuất sắc để bắt đầu, nhưng bạn phải bắt đầu để trở nên xuất sắc.”");
+        quotes.add("“Để không thể bị thay thế, người ta phải luôn nổi bật.”");
+        quotes.add("“Sự thanh lịch không phải là để thu hút sự chú ý, mà là để để lại ấn tượng lâu dài.”");
+        quotes.add("“Tốc độ của bạn không quan trọng miễn là bạn tiếp tục tiến về phía trước.”");
+        quotes.add("“Thất bại chỉ tồn tại khi bạn ngừng nỗ lực.”");
+        quotes.add("“Điều duy nhất chúng ta cần sợ là sự sợ hãi chính mình.”");
+        quotes.add("“Tại sao chúng ta ngã? Để chúng ta có thể học cách đứng lên.”");
+        quotes.add("“Bạn càng nỗ lực nhiều, bạn càng trở nên may mắn.”");
+        quotes.add("“Hãy làm hoặc không làm, không có chuyện thử.”");
+        quotes.add("“Không bao giờ là quá muộn để trở thành người bạn có thể trở thành.”");
+        quotes.add("“Bạn không thể tua lại và thay đổi phần đầu, nhưng bạn có thể bắt đầu từ vị trí hiện tại và sửa đổi phần kết.”");
+        quotes.add("“Em hãy mỉm cười, để đời hôm nay là một ngày đẹp trời.”");
+        quotes.add("“Cuộc đời này, nếu không thử thách thì còn gì đáng sống.”");
+        quotes.add("“Nếu bạn không thể bay, hãy đi bộ; nếu không thể chạy, hãy đi bộ; nếu đi bộ cũng khó khăn, hãy bò. Tuy nhiên, bạn phải tiến lên không ngừng.”");
+        quotes.add("“Trên hành trình đến thành công, không có dấu hiệu của sự lười biếng.”");
+        quotes.add("“Niềm tự hào sâu sắc nhất trong cuộc đời không phải là không bao giờ vấp ngã mà là đứng vững sau mỗi lần vấp ngã.”");
+        quotes.add("“Đừng ngồi đó chờ cơ hội; hãy tự tạo ra chúng.”");
+        quotes.add("“Hãy giữ cho khuôn mặt của bạn luôn hướng về phía ánh nắng, và bóng tối sẽ đổ về phía sau bạn.”");
+        quotes.add("“Nếu tôi không thể làm những điều lớn lao, tôi có thể làm những điều nhỏ bé một cách tuyệt vời.”");
+        quotes.add("“Cuộc sống của bạn chỉ trở nên tốt đẹp hơn khi bạn trở nên tốt hơn.”");
+        quotes.add("“Bạn không bao giờ quá già để đặt ra mục tiêu khác hoặc mơ một giấc mơ mới.”");
+        quotes.add("“Tôi không thể thay đổi hướng gió, nhưng tôi có thể điều chỉnh cánh buồm của mình để luôn đến đích.” ");
+        quotes.add("“Hãy tin rằng bạn có thể làm được và bạn đã đi được nửa chặng đường.");
+        quotes.add("“Tất cả những giấc mơ của chúng ta đều có thể trở thành hiện thực nếu chúng ta có đủ can đảm để theo đuổi chúng.” ");
+        quotes.add("“Hạnh phúc không phải là thứ được làm sẵn. Nó đến từ hành động của chính bạn.” ");
+        quotes.add("“Chúng ta trở thành những gì chúng ta nghĩ về.” ");
     }
 
     private String getRandomQuote() {
@@ -183,6 +191,71 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.txtQuotes);
         textView.setText(quote);
     }
+
+    private void createNotificationChannel() {
+        // Tạo NotificationChannel, nhưng chỉ trên API 26+ vì
+        // lớp NotificationChannel mới có trong thư viện hỗ trợ từ API 26 trở lên
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Đặt tên kênh thông báo
+            CharSequence name = "Thời tiết hôm nay thế nào?";
+            // Mô tả kênh thông báo
+            String description = "Thời tiết hôm nay";
+            // Đặt mức độ quan trọng của thông báo là cao
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            // Tạo một đối tượng NotificationChannel mới với ID, tên và mức độ quan trọng
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            // Đặt mô tả cho kênh thông báo
+            channel.setDescription(description);
+            // Đăng ký kênh với hệ thống; không thể thay đổi mức độ quan trọng
+            // hoặc hành vi thông báo khác sau khi đăng ký
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+            Log.d("NotificationChannel", "Notification channel created.");
+        } else {
+            Log.d("NotificationChannel", "Notification channel not needed.");
+        }
+    }
+
+    private void sendWeatherAlert(String weatherCondition, double currentTemp) {
+        Log.d("WeatherAlert", "sendWeatherAlert called with condition: " + weatherCondition + " and temperature: " + currentTemp);
+
+        // Thông báo luôn được gửi đi, không cần điều kiện
+        //String alertMessage = "Thời tiết hôm nay thế nào?";
+        String alertMessage;
+        if (weatherCondition.contains("Rain")) {
+            alertMessage = "Trời mưa rồi đó, nhớ mang theo ô!";
+        } else if (currentTemp > 35) {
+            alertMessage = "Trời nắng nóng gay gắt, nhớ mang theo nước và đội mũ!";
+        } else {
+            alertMessage = "Một ngày đẹp trời, chúc bạn có một ngày tốt lành!";
+        }
+
+        // Tạo một đối tượng NotificationCompat.Builder mới với kênh thông báo đã tạo
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                // Đặt biểu tượng nhỏ cho thông báo
+                .setSmallIcon(R.drawable.start1_preview_rev_1)
+                // Đặt tiêu đề cho thông báo là "Thời tiết hôm nay thế nào?"
+                .setContentTitle("Thời tiết hôm nay thế nào?")
+                .setContentText(alertMessage)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                // Đặt thông báo tự động hủy khi người dùng nhấn vào
+                .setAutoCancel(true);
+
+        // Tạo một Intent để mở MainActivity khi người dùng nhấn vào thông báo
+        Intent intent = new Intent(this, MainActivity.class);
+        // Tạo một PendingIntent để gắn với Intent vừa tạo
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        // Gán PendingIntent cho thông báo
+        builder.setContentIntent(pendingIntent);
+
+        // Lấy đối tượng NotificationManager từ hệ thống
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // Gửi thông báo với ID là 0
+        notificationManager.notify(0, builder.build());
+        Log.d("WeatherAlert", "Notification sent: " + alertMessage);
+    }
+
+
 
     public void GetCurrentWeatherData(String data) {
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
@@ -243,6 +316,8 @@ public class MainActivity extends AppCompatActivity {
                             String country = jsonObjectSys.getString("country");
                             txtcountry.setText(country);
 
+                            sendWeatherAlert(status, a);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -270,27 +345,27 @@ public class MainActivity extends AppCompatActivity {
             //n: đêm, d: ngày
             case "01d":
                 imgIcon.setImageResource(R.drawable.clearsky);
-                mainLayout.setBackgroundResource(R.drawable.nang);
+                mainLayout.setBackgroundResource(R.drawable.day);
                 break;
             case "01n":
-                imgIcon.setImageResource(R.drawable.clearsky);
-                mainLayout.setBackgroundResource(R.drawable.nang);
+                imgIcon.setImageResource(R.drawable.clear_sky);
+                mainLayout.setBackgroundResource(R.drawable.night);
                 break;
             case "02d":
                 imgIcon.setImageResource(R.drawable.fewclouds);
-                mainLayout.setBackgroundResource(R.drawable.nang);
+                mainLayout.setBackgroundResource(R.drawable.day);
                 break;
             case "02n":
-                imgIcon.setImageResource(R.drawable.fewclouds);
-                mainLayout.setBackgroundResource(R.drawable.nang);
+                imgIcon.setImageResource(R.drawable.n_fewclouds);
+                mainLayout.setBackgroundResource(R.drawable.night);
                 break;
             case "03d":
-                imgIcon.setImageResource(R.drawable.scatteredclouds);
+                imgIcon.setImageResource(R.drawable.fewclouds);
                 mainLayout.setBackgroundResource(R.drawable.nhieumay);
                 break;
             case "03n":
-                imgIcon.setImageResource(R.drawable.scatteredclouds);
-                mainLayout.setBackgroundResource(R.drawable.nhieumay);
+                imgIcon.setImageResource(R.drawable.n_fewclouds);
+                mainLayout.setBackgroundResource(R.drawable.night);
                 break;
             case "04d":
                 imgIcon.setImageResource(R.drawable.scatteredclouds);
@@ -298,14 +373,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "04n":
                 imgIcon.setImageResource(R.drawable.scatteredclouds);
-                mainLayout.setBackgroundResource(R.drawable.nhieumay);
+                mainLayout.setBackgroundResource(R.drawable.night);
                 break;
             case "09d":
                 imgIcon.setImageResource(R.drawable.rain_mua);
                 mainLayout.setBackgroundResource(R.drawable.mua);
                 break;
             case "09n":
-                imgIcon.setImageResource(R.drawable.rain_mua);
+                imgIcon.setImageResource(R.drawable.n_showerrain);
                 mainLayout.setBackgroundResource(R.drawable.mua);
                 break;
             case "10d":
@@ -313,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
                 mainLayout.setBackgroundResource(R.drawable.mua);
                 break;
             case "10n":
-                imgIcon.setImageResource(R.drawable.rain_mua);
+                imgIcon.setImageResource(R.drawable.n_showerrain);
                 mainLayout.setBackgroundResource(R.drawable.mua);
                 break;
             case "11d":
@@ -337,7 +412,6 @@ public class MainActivity extends AppCompatActivity {
                 imgIcon.setImageResource(R.drawable.storm);
                 break;
             default:
-                // Set a default icon and background
                 imgIcon.setImageResource(R.drawable.fewclouds);
                 mainLayout.setBackgroundResource(R.drawable.mua);
                 break;
@@ -458,6 +532,58 @@ public class MainActivity extends AppCompatActivity {
         }
         mediaPlayer.start();
     }
+
+    /*private void createNotificationChannel() {
+        // Tạo NotificationChannel, nhưng chỉ trên API 26+ vì
+        // lớp NotificationChannel mới có trong thư viện hỗ trợ từ API 26 trở lên
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Đặt tên kênh thông báo
+            CharSequence name = "Thời tiết hôm nay thế nào?";
+            // Mô tả kênh thông báo
+            String description = "Thời tiết hôm nay";
+            // Đặt mức độ quan trọng của thông báo là cao
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            // Tạo một đối tượng NotificationChannel mới với ID, tên và mức độ quan trọng
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            // Đặt mô tả cho kênh thông báo
+            channel.setDescription(description);
+            // Đăng ký kênh với hệ thống; không thể thay đổi mức độ quan trọng
+            // hoặc hành vi thông báo khác sau khi đăng ký
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+            Log.d("NotificationChannel", "Notification channel created.");
+        } else {
+            Log.d("NotificationChannel", "Notification channel not needed.");
+        }
+    }*/
+
+    /*private void sendWeatherAlert(String weatherCondition) {
+        // Nếu điều kiện thời tiết chứa từ "Rain" (mưa)
+        if (weatherCondition.contains("Rain")) {
+            // Tạo một đối tượng NotificationCompat.Builder mới với kênh thông báo đã tạo
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    // Đặt biểu tượng nhỏ cho thông báo
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    // Đặt tiêu đề cho thông báo là "Thời tiết hôm nay thế nào?"
+                    .setContentTitle("Thời tiết hôm nay thế nào?")
+                    .setContentText("Trời mưa rồi đó, nhớ mang theo ô")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    // Đặt thông báo tự động hủy khi người dùng nhấn vào
+                    .setAutoCancel(true);
+
+            // Tạo một Intent để mở MainActivity khi người dùng nhấn vào thông báo
+            Intent intent = new Intent(this, MainActivity.class);
+            // Tạo một PendingIntent để gắn với Intent vừa tạo
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            // Gán PendingIntent cho thông báo
+            builder.setContentIntent(pendingIntent);
+
+            // Lấy đối tượng NotificationManager từ hệ thống
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            // Gửi thông báo với ID là 0
+            notificationManager.notify(0, builder.build());
+        }
+    }*/
 
     private void toggleSound() {
         if (mediaPlayer != null) {
