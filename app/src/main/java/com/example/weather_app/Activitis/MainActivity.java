@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,6 +53,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
+
+import androidx.core.content.ContextCompat;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
@@ -129,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         GetCurrentWeatherData("Saigon");
         GetHourlyData("Saigon");
 
-        //Q
+        //
         addQuotes();
         String randomQuote = getRandomQuote();
         displayQuote(randomQuote);
@@ -186,7 +198,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showPopupMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
+        Context wrapper = new ContextThemeWrapper(this, R.style.PopupMenu);
+        PopupMenu popupMenu = new PopupMenu(wrapper, view);
         popupMenu.getMenu().add(0, 1, 0, "Map");
         popupMenu.getMenu().add(0, 2, 1, "Trò chơi");
         popupMenu.getMenu().add(0, 3, 2, "Thoát");
@@ -195,25 +208,25 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case 1:
-                        Intent map = new Intent(MainActivity.this ,GGMap.class) ;
+                        Intent map = new Intent(MainActivity.this, GGMap.class);
                         startActivity(map);
-                        return true ;
+                        return true;
                     case 2:
-                        Intent trochoi = new Intent(MainActivity.this ,MenuGame.class) ;
+                        Intent trochoi = new Intent(MainActivity.this, MenuGame.class);
                         startActivity(trochoi);
-                        return true ;
+                        return true;
                     case 3:
-                        Intent thoat = new Intent(MainActivity.this , sign_in.class) ;
+                        Intent thoat = new Intent(MainActivity.this, sign_in.class);
                         startActivity(thoat);
-                        return true ;
+                        return true;
                     default:
                         return false;
                 }
             }
         });
         popupMenu.show();
-
     }
+
 
 
     private void addQuotes() {
