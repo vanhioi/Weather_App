@@ -6,16 +6,19 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
 
        createNotificationChannel();
 
+        btnUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMenu(v);
+            }
+        });
+
         btnSoundToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         txtNext.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, FutureActivity.class);
+                Intent intent = new Intent(MainActivity.this, FutureActivity.   class);
                 String city = edtSearch.getText().toString();
                 intent.putExtra("name", city);
                 startActivity(intent);
@@ -174,6 +184,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenu().add(0, 1, 0, "Map");
+        popupMenu.getMenu().add(0, 2, 1, "Trò chơi");
+        popupMenu.getMenu().add(0, 3, 2, "Thoát");
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case 1:
+                        Intent map = new Intent(MainActivity.this ,GGMap.class) ;
+                        startActivity(map);
+                        return true ;
+                    case 2:
+                        Intent trochoi = new Intent(MainActivity.this ,MenuGame.class) ;
+                        startActivity(trochoi);
+                        return true ;
+                    case 3:
+                        Intent thoat = new Intent(MainActivity.this , sign_in.class) ;
+                        startActivity(thoat);
+                        return true ;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
+
+    }
+
 
     private void addQuotes() {
         quotes.add("“Bạn không cần phải xuất sắc để bắt đầu, nhưng bạn phải bắt đầu để trở nên xuất sắc.”");
