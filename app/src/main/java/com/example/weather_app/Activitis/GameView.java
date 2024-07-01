@@ -58,7 +58,7 @@ public class GameView extends SurfaceView implements Runnable {
         paddleWidth = 300;
         paddleHeight = 20;
         paddleX = 100;
-        paddleY = 1700;
+        paddleY = 1500;
         paddleSpeed = 20;
 
         // Tải các hình ảnh
