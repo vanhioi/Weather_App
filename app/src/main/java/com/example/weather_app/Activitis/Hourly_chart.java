@@ -1,6 +1,7 @@
 package com.example.weather_app.Activitis;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -155,11 +157,13 @@ public class Hourly_chart extends AppCompatActivity {
 
         // Tạo và cấu hình bộ dữ liệu cho biểu đồ cột
         BarDataSet rainDataSet = new BarDataSet(rainEntries, "Lượng mưa (mm)");
+        rainDataSet.setValueTextColor(Color.WHITE);
         rainDataSet.setColor(getResources().getColor(R.color.blue));
         rainDataSet.setValueTextSize(12f);
 
         // Tạo và cấu hình bộ dữ liệu cho biểu đồ đường
         LineDataSet tempDataSet = new LineDataSet(tempEntries, "Nhiệt độ (°C)");
+        tempDataSet.setValueTextColor(Color.WHITE);
         tempDataSet.setColor(getResources().getColor(R.color.orange));
         tempDataSet.setCircleColor(getResources().getColor(R.color.green));
         tempDataSet.setValueTextSize(12f);
@@ -172,7 +176,7 @@ public class Hourly_chart extends AppCompatActivity {
         });
         pieDataSet.setValueFormatter(new PercentFormatter(pieChart)); // Định dạng giá trị thành phần trăm
         pieDataSet.setValueTextSize(12f); // Kích thước chữ của giá trị
-        pieDataSet.setValueTextColor(getResources().getColor(R.color.black)); // Màu chữ của giá trị
+        pieDataSet.setValueTextColor(Color.WHITE); // Màu chữ của giá trị
 
         // Tạo dữ liệu cho biểu đồ và thiết lập biểu đồ
         BarData barData = new BarData(rainDataSet);
@@ -183,9 +187,9 @@ public class Hourly_chart extends AppCompatActivity {
         lineChart.setData(lineData);
         pieChart.setData(pieData);
 
-
         // Cấu hình trục X cho biểu đồ cột
         XAxis barXAxis = barChart.getXAxis();
+        barXAxis.setTextColor(Color.WHITE);
         barXAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
         barXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         barXAxis.setGranularity(1f);
@@ -194,6 +198,7 @@ public class Hourly_chart extends AppCompatActivity {
 
         // Cấu hình trục X cho biểu đồ đường
         XAxis lineXAxis = lineChart.getXAxis();
+        lineXAxis.setTextColor(Color.WHITE);
         lineXAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
         lineXAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         lineXAxis.setGranularity(1f);
@@ -202,11 +207,13 @@ public class Hourly_chart extends AppCompatActivity {
 
         // Cấu hình trục Y cho biểu đồ cột
         YAxis barLeftAxis = barChart.getAxisLeft();
+        barLeftAxis.setTextColor(Color.WHITE);
         barLeftAxis.setAxisMinimum(0f);
         barLeftAxis.setTextSize(14f);
 
         // Cấu hình trục Y cho biểu đồ đường
         YAxis lineLeftAxis = lineChart.getAxisLeft();
+        lineLeftAxis.setTextColor(Color.WHITE);
         lineLeftAxis.setAxisMinimum(0f);
         lineLeftAxis.setTextSize(14f);
 
@@ -218,20 +225,34 @@ public class Hourly_chart extends AppCompatActivity {
         Description barDescription = new Description();
         barDescription.setText("Lượng mưa (mm)");
         barDescription.setTextSize(14f);
+        barDescription.setTextColor(Color.WHITE);
         barChart.setDescription(barDescription);
-        barChart.animateY(1400); //thiết lập hiệu ứng animation cho biểu đồ cột.
+        barChart.animateY(1400); // thiết lập hiệu ứng animation cho biểu đồ cột.
 
         // Thiết lập mô tả cho biểu đồ đường
         Description lineDescription = new Description();
         lineDescription.setText("Nhiệt độ (°C)");
         lineDescription.setTextSize(14f);
+        lineDescription.setTextColor(Color.WHITE);
         lineChart.setDescription(lineDescription);
-        lineChart.animateY(1400); //thiết lập hiệu ứng animation cho biểu đồ đường.
+        lineChart.animateY(1400); // thiết lập hiệu ứng animation cho biểu đồ đường.
 
         pieChart.getDescription().setEnabled(false);
-        pieChart.setEntryLabelColor(getResources().getColor(R.color.black));
+        pieChart.setEntryLabelColor(Color.WHITE);
         pieChart.setEntryLabelTextSize(14f);
-        pieChart.animateY(1400); ////thiết lập hiệu ứng animation cho biểu đồ tròn.
+        pieChart.animateY(1400); // thiết lập hiệu ứng animation cho biểu đồ tròn.
+
+        // Thiết lập màu chú thích cho biểu đồ cột
+        Legend barLegend = barChart.getLegend();
+        barLegend.setTextColor(Color.WHITE);
+
+        // Thiết lập màu chú thích cho biểu đồ đường
+        Legend lineLegend = lineChart.getLegend();
+        lineLegend.setTextColor(Color.WHITE);
+
+        // Thiết lập màu chú thích cho biểu đồ tròn
+        Legend pieLegend = pieChart.getLegend();
+        pieLegend.setTextColor(Color.WHITE);
 
         // Làm mới biểu đồ để hiển thị dữ liệu mới
         barChart.invalidate();

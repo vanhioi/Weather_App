@@ -130,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="16dp"
-                    android:background="@drawable/backgroundwhite60"
+                    android:background="@drawable/background3"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -275,7 +275,7 @@
                 android:layout_weight="1"
                 android:nestedScrollingEnabled="true"
                 android:textSize="14sp"
-                android:background="@drawable/backgroundwhite60"/>
+                android:background="@drawable/background3"/>
         </LinearLayout>
     </ScrollView>
 
