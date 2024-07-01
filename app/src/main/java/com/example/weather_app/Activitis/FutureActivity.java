@@ -46,7 +46,7 @@ public class FutureActivity extends AppCompatActivity {
     CustomAdapter customAdapter;
     ArrayList<Weather> weatherArray;
     int currentBackgroundIndex = 0;
-    int[] backgroundImages = {R.drawable.mua, R.drawable.day2, R.drawable.night};
+    int[] backgroundImages = {R.drawable.mua, R.drawable.night};
 
 
     @SuppressLint("MissingInflatedId")

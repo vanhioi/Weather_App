@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/nang"
+    android:background="@drawable/night"
     tools:context=".Activitis.MenuGame">
 
     <androidx.cardview.widget.CardView
@@ -22,17 +22,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-
             android:padding="24dp"
-            android:background="@drawable/custom">
+            android:background="@drawable/backgroundwhite60">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ball"
+                android:text="Weather Game"
                 android:textAlignment="center"
-                android:textColor="@color/orange"
-                android:textSize="60sp"
+                android:textColor="@color/blue"
+                android:textSize="45sp"
                 android:textStyle="bold" />
 
             <Button
@@ -53,7 +52,7 @@
                 android:id="@+id/btnExit"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:text="Exit"
+                android:text="Thoát"
                 android:layout_gravity="center"
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"

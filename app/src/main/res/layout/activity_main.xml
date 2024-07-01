@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background4"
+    android:background="@drawable/night"
     tools:context=".Activitis.MainActivity" >
 
     <ScrollView
@@ -24,9 +24,9 @@
 
             <LinearLayout
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="20dp"
                 android:orientation="horizontal"
                 android:weightSum="5">
 
@@ -35,6 +35,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:layout_marginRight="3sp"
                     android:scaleType="fitStart"
                     android:layout_gravity="center"
                     android:background="@android:drawable/ic_menu_sort_by_size" />
@@ -44,8 +45,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:background="@drawable/searchview_background"
-                    >
+                    android:background="@drawable/background">
 
                     <EditText
                         android:id="@+id/edtSearch"
@@ -59,9 +59,9 @@
                         android:background="@null"
                         android:hint="Nhập thành phố"
                         android:inputType="text"
+                        android:textColorHint="#66FFFFFF"
                         android:textColor="@color/white"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:textSize="13sp" />
 
                     <ImageView
                         android:id="@+id/btnSearch"
@@ -81,8 +81,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:scaleType="fitEnd"
+                    android:layout_marginLeft="3sp"
                     android:layout_gravity="center"
-                    android:background="@drawable/user36" />
+                    android:background="@android:drawable/ic_menu_add" />
 
 
 
