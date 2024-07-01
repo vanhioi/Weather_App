@@ -51,8 +51,8 @@ public class GameView extends SurfaceView implements Runnable {
         ballRadius = 20;
         ballX = ballRadius + 50;
         ballY = ballRadius + 50;
-        ballSpeedX = 20;
-        ballSpeedY = 20;
+        ballSpeedX = 70;
+        ballSpeedY = 70;
 
         // Khởi tạo vị trí và kích thước của paddle
         paddleWidth = 300;
