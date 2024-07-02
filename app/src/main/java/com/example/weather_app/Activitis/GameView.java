@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -33,6 +34,10 @@ public class GameView extends SurfaceView implements Runnable {
     private Paint scorePaint; // Paint để vẽ điểm số
 
     private Context context; // Context để sử dụng Intent
+
+    //private MediaPlayer backgroundMusic;
+    private MediaPlayer collisionSound;
+    private MediaPlayer gameOverSound;
 
     public GameView(Context context) {
         super(context);
@@ -65,11 +70,21 @@ public class GameView extends SurfaceView implements Runnable {
         ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.clearsky);
         paddleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.scatteredclouds);
         background = BitmapFactory.decodeResource(getResources(), R.drawable.nang);
+
+        // Khởi tạo MediaPlayer cho nhạc nền và các hiệu ứng âm thanh
+        //backgroundMusic = MediaPlayer.create(context, R.raw.rainy);
+        //backgroundMusic.setLooping(true); // Lặp lại nhạc nền
+        collisionSound = MediaPlayer.create(context, R.raw.point);
+        gameOverSound = MediaPlayer.create(context, R.raw.gameover);
     }
 
     @Override
     public void run() {
         while (running) {
+
+            // Bắt đầu phát nhạc nền
+            //backgroundMusic.start();
+
             if (!holder.getSurface().isValid())
                 continue;
 
@@ -108,12 +123,17 @@ public class GameView extends SurfaceView implements Runnable {
             if (ballY + ballRadius > paddleY && ballX > paddleX && ballX < paddleX + paddleWidth) {
                 ballSpeedY = -ballSpeedY;
                 score++; // Tăng điểm số khi quả bóng chạm vào paddle
+                collisionSound.start(); // Phát âm thanh va chạm
             }
 
             // Kiểm tra game over
             if (ballY + ballRadius > 3000) { // Kết thúc trò chơi khi quả bóng vượt quá Y = 3000
                 // Dừng game
                 running = false;
+
+                // Dừng nhạc nền và phát âm thanh game over
+                //backgroundMusic.stop();
+                gameOverSound.start();
 
                 // Quay lại MenuGame
                 Intent intent = new Intent(context, MenuGame.class);

@@ -2,6 +2,7 @@ package com.example.weather_app.Activitis;
 
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,8 @@ public class MenuGame extends AppCompatActivity {
 
     Button btnPlay , btnExit ;
 
+    //MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,11 @@ public class MenuGame extends AppCompatActivity {
 
         btnPlay = findViewById(R.id.btnPlay) ;
         btnExit = findViewById(R.id.btnExit) ;
+
+        // Phát nhạc nền
+        /*mediaPlayer = MediaPlayer.create(this, R.raw.rainy);
+        mediaPlayer.setLooping(true); // Lặp lại nhạc nền
+        mediaPlayer.start(); // Bắt đầu phát nhạc*/
 
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +49,13 @@ public class MenuGame extends AppCompatActivity {
             }
         });
     }
-
+    /*protected void onDestroy() {
+        super.onDestroy();
+        // Dừng phát nhạc khi Activity bị hủy
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+    }*/
 
 }
