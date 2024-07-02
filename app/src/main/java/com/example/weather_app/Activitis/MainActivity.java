@@ -11,6 +11,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.weather_app.Adapters.HourlyAdapters;
 import com.example.weather_app.Domains.Hourly;
 import com.example.weather_app.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -74,6 +76,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+    BottomNavigationView bottom_navigation;
     private RecyclerView recyclerView;
     private MediaPlayer mediaPlayer;
     private boolean isMuted = false;
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.view1);
         btnSoundToggle = findViewById(R.id.btnSoundToggle);
         musicTime = findViewById(R.id.musicTime);
+        bottom_navigation = findViewById(R.id.bottom_navigation);
 
        createNotificationChannel();
 
@@ -226,6 +230,38 @@ public class MainActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
+
+    //@Override
+    /*public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bottom_navigation_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.home:
+                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.map:
+                Toast.makeText(this, "Map", Toast.LENGTH_SHORT).show();
+                Intent mapIntent = new Intent(MainActivity.this, GGMap.class);
+                startActivity(mapIntent);
+                return true;
+            case R.id.game:
+                Toast.makeText(this, "Game", Toast.LENGTH_SHORT).show();
+                Intent gameIntent = new Intent(MainActivity.this, MenuGame.class);
+                startActivity(gameIntent);
+                return true;
+            case R.id.logout:
+                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                Intent logoutIntent = new Intent(MainActivity.this, sign_in.class);
+                startActivity(logoutIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
 
 
 
