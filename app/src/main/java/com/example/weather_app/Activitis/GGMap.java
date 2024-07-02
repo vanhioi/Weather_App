@@ -8,6 +8,8 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -25,7 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class GGMap extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap gMap;
-    Button btnBack ;
+    ImageView btnBack ;
 
 
 
@@ -57,7 +59,7 @@ public class GGMap extends AppCompatActivity implements OnMapReadyCallback {
 
         LatLng location = new LatLng(10.800053827984547, 106.65177485190009);
         googleMap.addMarker(new MarkerOptions().position(location).title("Weather"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
     }
 
 

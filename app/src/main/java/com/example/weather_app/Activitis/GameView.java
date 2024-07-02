@@ -56,14 +56,14 @@ public class GameView extends SurfaceView implements Runnable {
         ballRadius = 20;
         ballX = ballRadius + 50;
         ballY = ballRadius + 50;
-        ballSpeedX = 70;
-        ballSpeedY = 70;
+        ballSpeedX = 60;
+        ballSpeedY = 60;
 
         // Khởi tạo vị trí và kích thước của paddle
-        paddleWidth = 300;
+        paddleWidth = 730;
         paddleHeight = 20;
         paddleX = 100;
-        paddleY = 1500;
+        paddleY = 1600;
         paddleSpeed = 20;
 
         // Tải các hình ảnh
@@ -127,7 +127,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             // Kiểm tra game over
-            if (ballY + ballRadius > 3000) { // Kết thúc trò chơi khi quả bóng vượt quá Y = 3000
+            if (ballY + ballRadius > 2600) { // Kết thúc trò chơi khi quả bóng vượt quá Y = 3000
                 // Dừng game
                 running = false;
 

@@ -2,7 +2,7 @@
 <resources>
     <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:textColor">@color/white</item>
-        <item name="android:itemBackground">@color/abc</item>
+        <item name="android:itemBackground">@color/blue</item>
     </style>
 
 </resources>

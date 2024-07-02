@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -77,6 +76,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+    BottomNavigationView bottom_navigation;
     private RecyclerView recyclerView;
     private MediaPlayer mediaPlayer;
     private boolean isMuted = false;
@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.view1);
         btnSoundToggle = findViewById(R.id.btnSoundToggle);
         musicTime = findViewById(R.id.musicTime);
+        bottom_navigation = findViewById(R.id.bottom_navigation);
 
        createNotificationChannel();
 
@@ -230,33 +231,9 @@ public class MainActivity extends AppCompatActivity {
         popupMenu.show();
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.bottom_navigation_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==R.id.home){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
-        else if (item.getItemId()==R.id.cart) {
-            Intent chart = new Intent(MainActivity.this, Hourly_chart.class);
-            startActivity(chart);
-        }else if (item.getItemId()==R.id.map) {
-            Intent mapIntent = new Intent(MainActivity.this, GGMap.class);
-            startActivity(mapIntent);
-        }else if (item.getItemId()==R.id.game) {
-            Intent game = new Intent(MainActivity.this, MenuGame.class);
-            startActivity(game);
-        }else if (item.getItemId()==R.id.logout) {
-            Intent logout = new Intent(MainActivity.this, sign_in.class);
-            startActivity(logout);
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
+
 
     private void addQuotes() {
         quotes.add("“Bạn không cần phải xuất sắc để bắt đầu, nhưng bạn phải bắt đầu để trở nên xuất sắc.”");
