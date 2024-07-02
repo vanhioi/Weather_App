@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Khởi tạo danh sách và adapter cho RecyclerView để hiển thị dữ liệu theo giờ
         hourlyArrayList = new ArrayList<>();
         hourlyAdapters = new HourlyAdapters(hourlyArrayList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -145,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
         GetCurrentWeatherData("Saigon");
         GetHourlyData("Saigon");
 
-        //
         addQuotes();
         String randomQuote = getRandomQuote();
         displayQuote(randomQuote);
@@ -191,12 +191,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // Không cần xử lý ở đây
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // Không cần xử lý ở đây
             }
         });
     }
@@ -496,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             default:
                 imgIcon.setImageResource(R.drawable.fewclouds);
-                mainLayout.setBackgroundResource(R.drawable.mua);
+                mainLayout.setBackgroundResource(R.drawable.night);
                 break;
         }
     }
@@ -521,8 +519,11 @@ public class MainActivity extends AppCompatActivity {
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                                 Date date = dateFormat.parse(dt_txt);
 
+                                //lấy tên ngày trong tuần
                                 SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+                                //ngày và tháng
                                 SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
+                                //giờ và phút
                                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
                                 String dayOfWeek = dayFormat.format(date);

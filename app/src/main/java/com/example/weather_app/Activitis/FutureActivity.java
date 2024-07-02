@@ -88,14 +88,15 @@ public class FutureActivity extends AppCompatActivity {
 
         backgroundImageView.setImageResource(backgroundImages[currentBackgroundIndex]);
 
+        //chỉnh thời gian giao diện background thay đổi sau 15s
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 animateBackgroundChange();
-                handler.postDelayed(this, 15000); // 30s
+                handler.postDelayed(this, 15000);
             }
-        }, 15000); // 30s
+        }, 15000);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +113,7 @@ public class FutureActivity extends AppCompatActivity {
         });
     }
 
+    //thay đổi background
     private void animateBackgroundChange() {
         currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(backgroundImageView, "alpha", 1f, 0f);
@@ -146,6 +148,7 @@ public class FutureActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            //Chuyển đổi chuỗi json thành jsonOject
                             JSONObject jsonObject = new JSONObject(response);
                             String day = jsonObject.getString("dt");
 
@@ -158,12 +161,9 @@ public class FutureActivity extends AppCompatActivity {
                             JSONArray jsonArrayWeather = jsonObject.getJSONArray("weather");
                             JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject(0);
                             String status = jsonObjectWeather.getString("main");
-                            String icon = jsonObjectWeather.getString("icon");
 
                             JSONObject jsonObjectMain = jsonObject.getJSONObject("main");
                             String nhietdo = jsonObjectMain.getString("temp");
-                            String nhietdocaonhat = jsonObjectMain.getString("temp_max");
-                            String nhietdothapnhat = jsonObjectMain.getString("temp_min");
                             String doam = jsonObjectMain.getString("humidity");
 
                             Double a = Double.valueOf(nhietdo);
