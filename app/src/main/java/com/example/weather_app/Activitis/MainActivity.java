@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "09n":
                 imgIcon.setImageResource(R.drawable.n_showerrain);
-                mainLayout.setBackgroundResource(R.drawable.mua);
+                mainLayout.setBackgroundResource(R.drawable.night);
                 break;
             case "10d":
                 imgIcon.setImageResource(R.drawable.rain_mua);
